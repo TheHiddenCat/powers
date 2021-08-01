@@ -1,0 +1,8 @@
+name: Powers
+version: ${project.version}
+main: me.hidden.powers.Main
+api-version: 1.17
+authors: [ Hidden ]
+commands:
+  powers:
+    description: something
