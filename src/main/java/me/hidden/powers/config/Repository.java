@@ -1,4 +1,4 @@
-package me.hidden.powers.database;
+package me.hidden.powers.config;
 
 public interface Repository<T, PK> {
     void create(T model);

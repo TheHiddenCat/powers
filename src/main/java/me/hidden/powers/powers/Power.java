@@ -1,4 +1,4 @@
-package me.hidden.powers.models;
+package me.hidden.powers.powers;
 
 import org.bukkit.event.Listener;
 

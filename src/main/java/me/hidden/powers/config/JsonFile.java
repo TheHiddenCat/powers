@@ -1,4 +1,4 @@
-package me.hidden.powers.database;
+package me.hidden.powers.config;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;

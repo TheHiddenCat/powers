@@ -1,4 +1,4 @@
-package me.hidden.powers.listeners;
+package me.hidden.powers.events;
 
 import me.hidden.powers.managers.PowerManager;
 import org.bukkit.event.EventHandler;

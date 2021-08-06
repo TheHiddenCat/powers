@@ -1,7 +1,7 @@
 package me.hidden.powers;
 
 import me.hidden.powers.commands.PowerCommands;
-import me.hidden.powers.listeners.PlayerConnectionListener;
+import me.hidden.powers.events.PlayerConnectionListener;
 import me.hidden.powers.managers.PowerManager;
 
 import org.bukkit.plugin.java.JavaPlugin;

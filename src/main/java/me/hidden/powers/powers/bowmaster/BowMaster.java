@@ -1,6 +1,6 @@
-package me.hidden.powers.models;
+package me.hidden.powers.powers.bowmaster;
 
-import me.hidden.powers.listeners.BowMasterListener;
+import me.hidden.powers.powers.Power;
 import org.bukkit.ChatColor;
 
 public class BowMaster extends Power {

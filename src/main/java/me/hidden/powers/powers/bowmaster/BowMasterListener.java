@@ -1,6 +1,4 @@
-package me.hidden.powers.listeners;
-
-import me.hidden.powers.models.BowMaster;
+package me.hidden.powers.powers.bowmaster;
 
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;

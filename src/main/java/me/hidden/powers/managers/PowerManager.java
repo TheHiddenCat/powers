@@ -1,16 +1,22 @@
 package me.hidden.powers.managers;
 
-import me.hidden.powers.models.BowMaster;
-import me.hidden.powers.models.Power;
+import me.hidden.powers.powers.Power;
+
+import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public final class PowerManager {
+    private static final String powersPackagePath = "me.hidden.powers.powers";
 
     private final Plugin plugin;
     private final List<Power> powers;
@@ -18,7 +24,42 @@ public final class PowerManager {
     public PowerManager(Plugin plugin) {
         this.plugin = plugin;
         this.powers = new ArrayList<>();
-        this.powers.add(new BowMaster());
+        this.loadPowers();
+        this.logAmountOfPowers();
+    }
+
+    private void logAmountOfPowers() {
+        Bukkit.getLogger().info("Loaded " + powers.size() + " powers");
+    }
+
+    private void loadPowers() {
+        try {
+            var classes = findPowerClasses();
+            for (var clazz : classes) {
+                var constructor = clazz.getConstructor();
+                var instance = constructor.newInstance();
+                powers.add(instance);
+            }
+        }
+        catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+            if (e instanceof NoSuchMethodException) {
+                Bukkit.getLogger().info("Did you provide a constructor for this power? Otherwise make sure that you call super() in the constructor of your power");
+            }
+        }
+    }
+
+    private Set<Class<? extends Power>> findPowerClasses() {
+        var classLoadersList = new LinkedList<ClassLoader>();
+        classLoadersList.add(ClasspathHelper.contextClassLoader());
+        classLoadersList.add(ClasspathHelper.staticClassLoader());
+
+        var reflections = new Reflections(new ConfigurationBuilder()
+                .setScanners(new SubTypesScanner(false), new ResourcesScanner())
+                .setUrls(ClasspathHelper.forClassLoader(classLoadersList.toArray(new ClassLoader[0])))
+                .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(powersPackagePath))));
+
+        return reflections.getSubTypesOf(Power.class);
     }
 
     public Iterable<Power> getPowers() {
