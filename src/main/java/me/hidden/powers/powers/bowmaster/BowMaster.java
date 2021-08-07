@@ -3,10 +3,7 @@ package me.hidden.powers.powers.bowmaster;
 import me.hidden.powers.powers.Power;
 import org.bukkit.ChatColor;
 
-public class BowMaster extends Power {
-    private double damageModifier = 1.2d;
-    private double arrowRecoveryModifier = 0.2d;
-    private double arrowSpeedModifier = 1.3d;
+public final class BowMaster extends Power {
 
     public BowMaster() {
         super();
@@ -29,27 +26,15 @@ public class BowMaster extends Power {
         return "Some description...";
     }
 
-    public double getDamageModifier() {
-        return damageModifier;
+    public double getArrowDamage() {
+        return getConfig("config", BowMasterConfiguration.class).getArrowDamage();
     }
 
-    public double getArrowRecoveryModifier() {
-        return arrowRecoveryModifier;
+    public double getArrowNoConsume() {
+        return getConfig("config", BowMasterConfiguration.class).getArrowNoConsume();
     }
 
-    public double getArrowSpeedModifier() {
-        return arrowSpeedModifier;
-    }
-
-    public void setDamageModifier(double damageModifier) {
-        this.damageModifier = damageModifier;
-    }
-
-    public void setArrowRecoveryModifier(double arrowRecoveryModifier) {
-        this.arrowRecoveryModifier = arrowRecoveryModifier;
-    }
-
-    public void setArrowSpeedModifier(double arrowSpeedModifier) {
-        this.arrowSpeedModifier = arrowSpeedModifier;
+    public double getArrowVelocity() {
+        return getConfig("config", BowMasterConfiguration.class).getArrowVelocity();
     }
 }

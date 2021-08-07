@@ -24,14 +24,14 @@ public final class BowMasterListener implements Listener {
         if (!bowMaster.playerHasPower(player.getUniqueId())) return;
 
         var arrow = (Arrow) e.getProjectile();
-        var velocity = arrow.getVelocity().multiply(bowMaster.getArrowSpeedModifier());
+        var velocity = arrow.getVelocity().multiply(bowMaster.getArrowVelocity());
         arrow.setVelocity(velocity);
 
         var arrowRecovered = random.nextDouble();
-        if (arrowRecovered > bowMaster.getArrowRecoveryModifier()) {
+        if (arrowRecovered > bowMaster.getArrowNoConsume()) {
             e.setConsumeItem(false);
         }
 
-        arrow.setDamage(arrow.getDamage() * bowMaster.getDamageModifier());
+        arrow.setDamage(arrow.getDamage() * bowMaster.getArrowDamage());
     }
 }

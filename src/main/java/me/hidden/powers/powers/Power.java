@@ -1,9 +1,9 @@
 package me.hidden.powers.powers;
 
 import me.hidden.powers.Main;
-import me.hidden.powers.config.JsonConfiguration;
 
 import me.hidden.powers.config.PowerConfiguration;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 import java.io.File;
@@ -50,8 +50,8 @@ public abstract class Power {
         return false;
     }
 
-    protected JsonConfiguration getConfig(String fileName) {
-        return configurations.get(fileName);
+    protected <T extends PowerConfiguration> T getConfig(String fileName, Class<T> clazz) {
+        return clazz.cast(configurations.get(fileName));
     }
 
     protected void addEvent(Class<? extends Listener> eventClass) {
@@ -70,6 +70,7 @@ public abstract class Power {
         }
         catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
+            Bukkit.getLogger().info("Failed to initialize power configuration with file name: " + fileName + ".json");
         }
     }
 }
