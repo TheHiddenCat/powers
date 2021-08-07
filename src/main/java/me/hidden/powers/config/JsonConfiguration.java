@@ -29,12 +29,27 @@ public class JsonConfiguration {
             folder.mkdirs();
         }
 
-        try(var writer = new FileWriter(file.getAbsolutePath())) {
-            writer.write(data);
-            writer.flush();
+        if (!file.exists()) {
+            try (var writer = new FileWriter(file.getAbsolutePath())) {
+                writer.write(data);
+                writer.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        catch (IOException e) {
-            e.printStackTrace();
+    }
+
+    public void save() {
+        if (file.exists()) {
+            try (var writer = new FileWriter(file.getAbsolutePath())) {
+                writer.write(data.toJSONString());
+                writer.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            throw new RuntimeException("No file found with path: " + file.getAbsolutePath() + ". Make sure it was created.");
         }
     }
 

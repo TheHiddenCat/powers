@@ -1,10 +1,12 @@
 package me.hidden.powers.managers;
 
+import me.hidden.powers.config.PlayerConfiguration;
 import me.hidden.powers.powers.Power;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
+
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import org.reflections.scanners.SubTypesScanner;
@@ -25,11 +27,6 @@ public final class PowerManager {
         this.plugin = plugin;
         this.powers = new ArrayList<>();
         this.loadPowers();
-        this.logAmountOfPowers();
-    }
-
-    private void logAmountOfPowers() {
-        Bukkit.getLogger().info("Loaded " + powers.size() + " powers");
     }
 
     private void loadPowers() {
@@ -63,6 +60,16 @@ public final class PowerManager {
     }
 
     public Iterable<Power> getPowers() {
+        return powers;
+    }
+
+    public Iterable<Power> getPowers(UUID uuid) {
+        var powers =  new ArrayList<Power>();
+        for (var power : this.powers) {
+            if (power.playerHasPower(uuid)) {
+                powers.add(power);
+            }
+        }
         return powers;
     }
 
@@ -122,11 +129,18 @@ public final class PowerManager {
     }
 
     public void unregisterPowerEvents(Power power) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        var listeners = power.getEventListeners();
-        for (var listener : listeners) {
-            var constructor = listener.getConstructor(power.getClass());
-            var instance = constructor.newInstance(power);
-            HandlerList.unregisterAll(instance);
+        var powerListeners = power.getEventListeners();
+        var registered = HandlerList.getRegisteredListeners(plugin);
+        for (var registeredListener : registered) {
+            for (var listener : powerListeners) {
+                if (registeredListener.getListener().getClass() == listener) {
+                    HandlerList.unregisterAll(registeredListener.getListener());
+                }
+            }
         }
+    }
+
+    public int getAmountOfPowersLoaded() {
+        return powers.size();
     }
 }

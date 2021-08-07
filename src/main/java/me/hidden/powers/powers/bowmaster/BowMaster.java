@@ -18,7 +18,7 @@ public final class BowMaster extends Power {
 
     @Override
     public String getFancyName() {
-        return ChatColor.GREEN + "Bow Master";
+        return ChatColor.RED + "Bow Master";
     }
 
     @Override

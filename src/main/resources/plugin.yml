@@ -5,4 +5,5 @@ api-version: 1.17
 authors: [ Hidden ]
 commands:
   powers:
-    description: something
+    description: Main commands of the Powers plugin
+    tab-complete: -1

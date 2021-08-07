@@ -3,7 +3,7 @@ package me.hidden.powers.powers.dawnbreaker;
 import me.hidden.powers.powers.Power;
 import org.bukkit.ChatColor;
 
-public class DawnBreaker extends Power {
+public final class DawnBreaker extends Power {
 
     public DawnBreaker() {
         super();

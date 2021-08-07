@@ -1,6 +1,7 @@
 package me.hidden.powers.commands.subcommands;
 
 import me.hidden.powers.commands.SubCommand;
+import me.hidden.powers.config.PlayerConfiguration;
 import me.hidden.powers.managers.PowerManager;
 
 import org.bukkit.ChatColor;
@@ -9,9 +10,11 @@ import org.bukkit.entity.Player;
 public final class ListPowersSubCommand implements SubCommand {
 
     private final PowerManager powerManager;
+    private final PlayerConfiguration playerConfiguration;
 
-    public ListPowersSubCommand(PowerManager powerManager) {
+    public ListPowersSubCommand(PowerManager powerManager, PlayerConfiguration playerConfiguration) {
         this.powerManager = powerManager;
+        this.playerConfiguration = playerConfiguration;
     }
 
     @Override
@@ -31,7 +34,7 @@ public final class ListPowersSubCommand implements SubCommand {
 
     @Override
     public void execute(Player sender, String[] args) {
-        sender.sendMessage(ChatColor.GREEN + "[Powers]");
+        sender.sendMessage(ChatColor.GOLD + "[Powers List]");
         var message = new StringBuilder();
         for (var power : powerManager.getPowers()) {
             message.append(power.getFancyName()).append(" ");
