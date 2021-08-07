@@ -1,17 +1,13 @@
 package me.hidden.powers.powers.dawnbreaker;
 
 import me.hidden.powers.powers.Power;
+import org.bukkit.ChatColor;
 
 public class DawnBreaker extends Power {
 
     public DawnBreaker() {
         super();
-        this.eventListeners.add(DawnBreakerListener.class);
-    }
-
-    @Override
-    public long getId() {
-        return 2;
+        addEvent(DawnBreakerListener.class);
     }
 
     @Override
@@ -21,7 +17,7 @@ public class DawnBreaker extends Power {
 
     @Override
     public String getFancyName() {
-        return "Dawn Breaker";
+        return ChatColor.RED + "Dawn Breaker";
     }
 
     @Override

@@ -6,23 +6,31 @@ import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
-public class JsonFile {
+public class JsonConfiguration {
     protected final File folder;
     protected File file;
     protected JSONArray data;
 
-    public JsonFile(File folder, String fileName) {
+    public JsonConfiguration(File folder, String fileName) {
         this.folder = folder;
         this.file = new File(this.folder, fileName);
         this.data = null;
     }
 
-    public void create() {
-        try {
+    public JSONArray getData() {
+        return data;
+    }
+
+    public void create(String data) {
+        try(var writer = new FileWriter(file.getAbsolutePath())) {
             if (!file.exists()) {
-                file.createNewFile();
+                folder.mkdirs();
+                writer.write(data);
+                writer.flush();
+                writer.close();
             }
         }
         catch (IOException e) {

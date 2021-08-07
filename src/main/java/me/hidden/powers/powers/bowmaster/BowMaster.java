@@ -10,12 +10,8 @@ public class BowMaster extends Power {
 
     public BowMaster() {
         super();
-        this.eventListeners.add(BowMasterListener.class);
-    }
-
-    @Override
-    public long getId() {
-        return 1;
+        addEvent(BowMasterListener.class);
+        addConfig("config", BowMasterConfiguration.class);
     }
 
     @Override
