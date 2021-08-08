@@ -8,7 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DawnBreakerRayTask extends BukkitRunnable {
+public final class DawnBreakerRayTask extends BukkitRunnable {
 
     private final List<LivingEntity> hitEntities;
     private final Player player;

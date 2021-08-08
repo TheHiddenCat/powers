@@ -5,7 +5,7 @@ import org.json.simple.JSONObject;
 
 import java.io.File;
 
-public class DawnBreakerConfiguration extends PowerConfiguration {
+public final class DawnBreakerConfiguration extends PowerConfiguration {
     public DawnBreakerConfiguration(File folder, String fileName) {
         super(folder, fileName);
     }

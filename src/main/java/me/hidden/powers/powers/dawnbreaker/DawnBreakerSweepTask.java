@@ -8,7 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DawnBreakerSweepTask extends BukkitRunnable {
+public final class DawnBreakerSweepTask extends BukkitRunnable {
 
     private final List<LivingEntity> hitEntities;
     private final Player player;
@@ -36,9 +36,13 @@ public class DawnBreakerSweepTask extends BukkitRunnable {
             spawn.setZ(location.getZ() + Math.sin(counter) * 3.0d);
 
             var options = new Particle.DustOptions(Color.fromRGB(255, 221, 145), 2.0F);
-            world.spawnParticle(Particle.REDSTONE, spawn, 15, 0.3f,0.3f,0.3f, options);
+            world.spawnParticle(Particle.REDSTONE, spawn, 12, 0.3f,0.3f,0.3f, options);
             world.spawnParticle(Particle.FIREWORKS_SPARK, spawn, 4, 0.5f, 0.5f, 0.5f, 0);
             world.playSound(location, Sound.BLOCK_GLASS_BREAK, 0.2f, 0.6f);
+
+            var rotation = player.getLocation();
+            rotation.setYaw(player.getLocation().getYaw() + 36);
+            player.teleport(rotation);
 
             var nearby = world.getNearbyEntities(location, 3, 3, 3, (x) -> x instanceof LivingEntity);
             for (var entity : nearby) {
@@ -49,7 +53,8 @@ public class DawnBreakerSweepTask extends BukkitRunnable {
                 var unit = livingEntity.getLocation().toVector().subtract(location.toVector()).normalize();
                 livingEntity.setVelocity(unit.multiply(sweepForce));
                 livingEntity.damage(sweepDamage);
-                world.spawnParticle(Particle.FLASH, livingEntity.getLocation(), 0, 0, 0, 0, 0);
+                world.spawnParticle(Particle.FLASH, livingEntity.getLocation(), 0, 0f, 0f, 0f, 0);
+                world.spawnParticle(Particle.SWEEP_ATTACK, livingEntity.getLocation(), 1, 0f,0f,0f);
                 hitEntities.add(livingEntity);
             }
 
