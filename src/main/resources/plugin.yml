@@ -6,4 +6,3 @@ authors: [ Hidden ]
 commands:
   powers:
     description: Main commands of the Powers plugin
-    tab-complete: -1

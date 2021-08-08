@@ -3,33 +3,32 @@ package me.hidden.powers.commands.subcommands;
 import me.hidden.powers.commands.SubCommand;
 import me.hidden.powers.config.PlayerConfiguration;
 import me.hidden.powers.managers.PowerManager;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public final class RemovePowerSubCommand implements SubCommand {
+public class InfoPowerSubCommand implements SubCommand {
 
     private final PowerManager powerManager;
     private final PlayerConfiguration playerConfiguration;
 
-    public RemovePowerSubCommand(PowerManager powerManager, PlayerConfiguration playerConfiguration) {
+    public InfoPowerSubCommand(PowerManager powerManager, PlayerConfiguration playerConfiguration) {
         this.powerManager = powerManager;
         this.playerConfiguration = playerConfiguration;
     }
 
     @Override
     public String getName() {
-        return "remove";
+        return "info";
     }
 
     @Override
     public String getDescription() {
-        return "Remove a specific power from this player";
+        return "Display info about a certain power";
     }
 
     @Override
     public String getUsage() {
-        return "/powers remove <power_name>";
+        return "/powers info <power_name>";
     }
 
     @Override
@@ -41,16 +40,13 @@ public final class RemovePowerSubCommand implements SubCommand {
                 sender.sendMessage(ChatColor.YELLOW + "Invalid Power name, make sure the name is correct!");
                 return false;
             }
-            var uuid = sender.getUniqueId();
-            if (!power.playerHasPower(uuid)) {
-                sender.sendMessage(ChatColor.YELLOW + "You do not have this power!");
-                return false;
-            }
-            powerManager.unregisterPlayer(uuid, power);
-            playerConfiguration.removePower(uuid, power.getName());
-            playerConfiguration.save();
+
             sender.sendMessage(ChatColor.GREEN + "[Powers]");
-            sender.sendMessage(ChatColor.YELLOW + "Removed " + power.getFancyName() + ChatColor.YELLOW + " from player powers!");
+            sender.sendMessage(ChatColor.YELLOW + "===[ " + power.getFancyName() +  ChatColor.YELLOW + " ]===");
+            sender.sendMessage(ChatColor.YELLOW + "+----------------------------+");
+            sender.sendMessage(power.getDescription());
+            sender.sendMessage(ChatColor.YELLOW + "+----------------------------+");
+            sender.sendMessage("");
             return false;
         }
         return true;

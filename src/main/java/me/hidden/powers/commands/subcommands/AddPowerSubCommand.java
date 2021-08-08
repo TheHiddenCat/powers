@@ -28,28 +28,31 @@ public final class AddPowerSubCommand implements SubCommand {
 
     @Override
     public String getUsage() {
-        return "powers add <power_name>";
+        return "/powers add <power_name>";
     }
 
     @Override
-    public void execute(Player sender, String[] args) {
+    public boolean execute(Player sender, String[] args) {
         if (args.length == 2) {
             var powerName = args[1];
             var power = powerManager.getPower(powerName);
             if (power == null) {
                 sender.sendMessage(ChatColor.YELLOW + "Invalid Power name, make sure the name is correct!");
-                return;
+                return false;
             }
             var uuid = sender.getUniqueId();
             if (power.playerHasPower(uuid)) {
                 sender.sendMessage(ChatColor.YELLOW + "You already have " + power.getFancyName() + ChatColor.YELLOW + " assigned to your powers!");
-                return;
+                return false;
             }
 
             powerManager.registerPlayer(uuid, power);
             playerConfiguration.addPower(uuid, power.getName());
             playerConfiguration.save();
+            sender.sendMessage(ChatColor.GREEN + "[Powers]");
             sender.sendMessage(ChatColor.YELLOW + power.getFancyName() + ChatColor.YELLOW + " added to player powers!");
+            return false;
         }
+        return true;
     }
 }

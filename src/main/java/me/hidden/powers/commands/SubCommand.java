@@ -6,5 +6,5 @@ public interface SubCommand {
     String getName();
     String getDescription();
     String getUsage();
-    void execute(Player sender, String[] args);
+    boolean execute(Player sender, String[] args);
 }

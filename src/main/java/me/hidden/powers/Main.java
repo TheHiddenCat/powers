@@ -1,6 +1,7 @@
 package me.hidden.powers;
 
 import me.hidden.powers.commands.PowerCommands;
+import me.hidden.powers.commands.autocomplete.PowerCommandsCompletion;
 import me.hidden.powers.config.PlayerConfiguration;
 import me.hidden.powers.events.PlayerConnectionListener;
 import me.hidden.powers.managers.PowerManager;
@@ -9,8 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONArray;
-
-import java.io.File;
 
 public final class Main extends JavaPlugin {
 
@@ -38,6 +37,7 @@ public final class Main extends JavaPlugin {
 
     private void initializeCommands() {
         getCommand("powers").setExecutor(new PowerCommands(powerManager, playerConfiguration));
+        getCommand("powers").setTabCompleter(new PowerCommandsCompletion(powerManager));
     }
 
     private void initializeManagers() {

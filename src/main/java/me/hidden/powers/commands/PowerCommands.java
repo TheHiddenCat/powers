@@ -1,8 +1,6 @@
 package me.hidden.powers.commands;
 
-import me.hidden.powers.commands.subcommands.AddPowerSubCommand;
-import me.hidden.powers.commands.subcommands.ListPowersSubCommand;
-import me.hidden.powers.commands.subcommands.RemovePowerSubCommand;
+import me.hidden.powers.commands.subcommands.*;
 import me.hidden.powers.config.PlayerConfiguration;
 import me.hidden.powers.managers.PowerManager;
 import org.bukkit.ChatColor;
@@ -16,26 +14,35 @@ public final class PowerCommands extends CommandManager {
         this.subCommands.add(new AddPowerSubCommand(powerManager, playerConfiguration));
         this.subCommands.add(new ListPowersSubCommand(powerManager, playerConfiguration));
         this.subCommands.add(new RemovePowerSubCommand(powerManager, playerConfiguration));
+        this.subCommands.add(new ShowPowersSubCommand(powerManager, playerConfiguration));
+        this.subCommands.add(new InfoPowerSubCommand(powerManager, playerConfiguration));
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player player) {
-            if (args.length == 0) {
-                player.sendMessage(ChatColor.YELLOW + "/powers ");
-                for (var subCommand : subCommands) {
-                    player.sendMessage(ChatColor.YELLOW + " |> " + subCommand.getName());
-                }
-                return false;
-            }
-            else {
+            if (args.length > 0) {
                 for (var subCommand : subCommands) {
                     if (args[0].equalsIgnoreCase(subCommand.getName())) {
-                        subCommand.execute(player, args);
+                        var result = subCommand.execute(player, args);
+                        if (result) {
+                            player.sendMessage(ChatColor.GREEN + "[Powers]");
+                            sender.sendMessage(ChatColor.YELLOW + subCommand.getUsage());
+                        }
+                        return false;
                     }
                 }
             }
+            displayUsages(player);
         }
-        return true;
+        return false;
+    }
+
+    private void displayUsages(Player player) {
+        player.sendMessage(ChatColor.GREEN + "[Powers]");
+        player.sendMessage(ChatColor.YELLOW + "/powers ");
+        for (var subCommand : subCommands) {
+            player.sendMessage(ChatColor.YELLOW + " |> " + subCommand.getUsage());
+        }
     }
 }

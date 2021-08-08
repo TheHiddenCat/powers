@@ -29,16 +29,21 @@ public final class ListPowersSubCommand implements SubCommand {
 
     @Override
     public String getUsage() {
-        return "powers list";
+        return "/powers list";
     }
 
     @Override
-    public void execute(Player sender, String[] args) {
-        sender.sendMessage(ChatColor.GOLD + "[Powers List]");
-        var message = new StringBuilder();
-        for (var power : powerManager.getPowers()) {
-            message.append(power.getFancyName()).append(" ");
+    public boolean execute(Player sender, String[] args) {
+        if (args.length == 1) {
+            sender.sendMessage(ChatColor.GREEN + "[Powers]");
+            var message = new StringBuilder();
+            for (var power : powerManager.getPowers()) {
+                message.append(power.getFancyName()).append(" ");
+            }
+            sender.sendMessage(message.toString());
+            sender.sendMessage("");
+            return false;
         }
-        sender.sendMessage(message.toString());
+        return true;
     }
 }
