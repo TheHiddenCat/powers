@@ -22,8 +22,8 @@ public abstract class Power {
     }
 
     public abstract String getName();
-    public abstract String getFancyName();
     public abstract String getDescription();
+    public abstract PowerType getPowerType();
 
     public Iterable<Class<? extends Listener>> getEventListeners() {
         return eventListeners;
@@ -48,6 +48,12 @@ public abstract class Power {
             }
         }
         return false;
+    }
+
+    public String getFancyName() {
+        var name = getName();
+        var color = getPowerType().getColor();
+        return color + name;
     }
 
     protected <T extends PowerConfiguration> T getConfig(String fileName, Class<T> clazz) {

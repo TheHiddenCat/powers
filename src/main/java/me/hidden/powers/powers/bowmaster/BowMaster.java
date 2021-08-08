@@ -1,7 +1,7 @@
 package me.hidden.powers.powers.bowmaster;
 
 import me.hidden.powers.powers.Power;
-import org.bukkit.ChatColor;
+import me.hidden.powers.powers.PowerType;
 
 public final class BowMaster extends Power {
 
@@ -13,17 +13,17 @@ public final class BowMaster extends Power {
 
     @Override
     public String getName() {
-        return "BowMaster";
-    }
-
-    @Override
-    public String getFancyName() {
-        return ChatColor.RED + "Bow Master";
+        return "Bowmaster";
     }
 
     @Override
     public String getDescription() {
         return "Some description...";
+    }
+
+    @Override
+    public PowerType getPowerType() {
+        return PowerType.OFFENSIVE;
     }
 
     public double getArrowDamage() {

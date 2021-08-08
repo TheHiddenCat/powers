@@ -2,7 +2,7 @@ package me.hidden.powers.powers.dawnbreaker;
 
 import me.hidden.powers.powers.Power;
 
-import org.bukkit.ChatColor;
+import me.hidden.powers.powers.PowerType;
 
 public final class DawnBreaker extends Power {
 
@@ -18,8 +18,8 @@ public final class DawnBreaker extends Power {
     }
 
     @Override
-    public String getFancyName() {
-        return ChatColor.RED + "Dawn Breaker";
+    public PowerType getPowerType() {
+        return PowerType.OFFENSIVE;
     }
 
     @Override
