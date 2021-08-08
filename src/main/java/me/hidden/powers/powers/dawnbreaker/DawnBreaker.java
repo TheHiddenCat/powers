@@ -1,7 +1,7 @@
 package me.hidden.powers.powers.dawnbreaker;
 
 import me.hidden.powers.powers.Power;
-import me.hidden.powers.powers.bowmaster.BowMasterConfiguration;
+
 import org.bukkit.ChatColor;
 
 public final class DawnBreaker extends Power {
@@ -26,6 +26,10 @@ public final class DawnBreaker extends Power {
     public String getDescription() {
         return "Some description";
     }
+
+    public double getSweepForce() { return getConfig("config", DawnBreakerConfiguration.class).getSweepForce(); }
+
+    public double getSweepDamage() { return getConfig("config", DawnBreakerConfiguration.class).getSweepDamage(); }
 
     public double getRayLength() {
         return getConfig("config", DawnBreakerConfiguration.class).getRayLength();
