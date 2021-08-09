@@ -6,7 +6,7 @@ public enum PowerType {
     UTILITY(ChatColor.GREEN),
     DEFENSIVE(ChatColor.BLUE),
     OFFENSIVE(ChatColor.RED),
-    SPECIAL(ChatColor.GOLD);
+    SPECIAL(ChatColor.LIGHT_PURPLE);
 
     private final ChatColor color;
 
