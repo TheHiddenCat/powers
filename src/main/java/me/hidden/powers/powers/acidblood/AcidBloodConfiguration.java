@@ -26,5 +26,4 @@ public final class AcidBloodConfiguration extends PowerConfiguration {
     public int getPoisonDuration() {
         return ((Number) getData().get("poison_duration")).intValue();
     }
-
 }

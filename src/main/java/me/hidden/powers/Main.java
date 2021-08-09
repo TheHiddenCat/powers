@@ -3,7 +3,7 @@ package me.hidden.powers;
 import me.hidden.powers.commands.PowerCommands;
 import me.hidden.powers.commands.autocomplete.PowerCommandsCompletion;
 import me.hidden.powers.config.PlayerConfiguration;
-import me.hidden.powers.events.PlayerConnectionListener;
+import me.hidden.powers.listeners.PlayerConnectionListener;
 import me.hidden.powers.managers.PowerManager;
 
 import me.hidden.powers.tasks.PowerCooldownsTask;

@@ -1,4 +1,4 @@
-package me.hidden.powers.events;
+package me.hidden.powers.listeners;
 
 import me.hidden.powers.config.PlayerConfiguration;
 import me.hidden.powers.managers.PowerManager;

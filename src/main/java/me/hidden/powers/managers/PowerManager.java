@@ -1,6 +1,5 @@
 package me.hidden.powers.managers;
 
-import me.hidden.powers.config.PlayerConfiguration;
 import me.hidden.powers.powers.Power;
 
 import org.bukkit.Bukkit;

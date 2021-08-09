@@ -42,10 +42,11 @@ public class InfoPowerSubCommand implements SubCommand {
             }
 
             sender.sendMessage(ChatColor.GREEN + "[Powers]");
-            sender.sendMessage(ChatColor.YELLOW + "===[ " + power.getFancyName() +  ChatColor.YELLOW + " ]===");
-            sender.sendMessage(ChatColor.YELLOW + "+----------------------------+");
+            sender.sendMessage("");
+            sender.sendMessage(ChatColor.YELLOW + "[ " + power.getFancyName() +  ChatColor.YELLOW + " ]");
+            sender.sendMessage(ChatColor.YELLOW + "+---------------------------------------------------+");
             sender.sendMessage(power.getDescription());
-            sender.sendMessage(ChatColor.YELLOW + "+----------------------------+");
+            sender.sendMessage(ChatColor.YELLOW + "+---------------------------------------------------+");
             sender.sendMessage("");
             return false;
         }

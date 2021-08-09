@@ -36,11 +36,14 @@ public final class ListPowersSubCommand implements SubCommand {
     public boolean execute(Player sender, String[] args) {
         if (args.length == 1) {
             sender.sendMessage(ChatColor.GREEN + "[Powers]");
+            sender.sendMessage("");
+            sender.sendMessage(ChatColor.YELLOW + "+---------------------------------------------------+");
             var message = new StringBuilder();
             for (var power : powerManager.getPowers()) {
                 message.append(power.getFancyName()).append("  ");
             }
             sender.sendMessage(message.toString());
+            sender.sendMessage(ChatColor.YELLOW + "+---------------------------------------------------+");
             sender.sendMessage("");
             return false;
         }
