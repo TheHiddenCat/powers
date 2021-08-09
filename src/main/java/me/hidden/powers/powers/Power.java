@@ -48,21 +48,24 @@ public abstract class Power {
     public void addCooldown(Cooldown cooldown) {
         for (var existingCooldown : cooldowns) {
             if (existingCooldown.getPlayer().equals(cooldown.getPlayer()) && existingCooldown.getKey().equals(cooldown.getKey())) {
-                cooldowns.add(cooldown);
-                break;
+                return;
             }
         }
+        cooldowns.add(cooldown);
     }
     public void removeCooldown(Cooldown cooldown) {
-        removeCooldown(cooldown.getPlayer(), cooldown.getKey());
+        cooldowns.remove(cooldown);
     }
     public void removeCooldown(UUID player, String key) {
         cooldowns.removeIf(x ->  x.getPlayer().equals(player) && x.getKey().equals(key));
     }
+    public boolean onCooldown(UUID player, String key) {
+        return cooldowns.stream().anyMatch(x ->  x.getPlayer().equals(player) && x.getKey().equals(key));
+    }
 
     public boolean playerHasPower(UUID playerUUID) {
         for (var uuid : players) {
-            if (uuid == playerUUID) {
+            if (uuid.equals(playerUUID)) {
                 return true;
             }
         }

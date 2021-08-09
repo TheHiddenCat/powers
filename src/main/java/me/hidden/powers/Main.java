@@ -31,7 +31,7 @@ public final class Main extends JavaPlugin {
     }
 
     private void initializeTasks() {
-        var cooldownsTask = new PowerCooldownsTask(powerManager);
+        var cooldownsTask = new PowerCooldownsTask(this, powerManager);
         cooldownsTask.runTaskTimer(this, 0, cooldownsTask.getTickInterval());
     }
 
