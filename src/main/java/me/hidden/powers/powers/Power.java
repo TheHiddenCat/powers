@@ -14,11 +14,13 @@ public abstract class Power {
     private final Set<Class<? extends Listener>> eventListeners;
     private final Set<UUID> players;
     private final Map<String, PowerConfiguration> configurations;
+    private final List<Cooldown> cooldowns;
 
     public Power() {
         this.eventListeners = new HashSet<>();
         this.players = new HashSet<>();
         this.configurations = new HashMap<>();
+        this.cooldowns = new ArrayList<>();
     }
 
     public abstract String getName();
@@ -31,6 +33,9 @@ public abstract class Power {
     public Iterable<UUID> getPlayers() {
         return players;
     }
+    public Collection<Cooldown> getCooldowns() {
+        return cooldowns;
+    }
     public void addPlayer(UUID uuid) {
         players.add(uuid);
     }
@@ -39,6 +44,20 @@ public abstract class Power {
     }
     public long amountPlayers() {
         return players.size();
+    }
+    public void addCooldown(Cooldown cooldown) {
+        for (var existingCooldown : cooldowns) {
+            if (existingCooldown.getPlayer().equals(cooldown.getPlayer()) && existingCooldown.getKey().equals(cooldown.getKey())) {
+                cooldowns.add(cooldown);
+                break;
+            }
+        }
+    }
+    public void removeCooldown(Cooldown cooldown) {
+        removeCooldown(cooldown.getPlayer(), cooldown.getKey());
+    }
+    public void removeCooldown(UUID player, String key) {
+        cooldowns.removeIf(x ->  x.getPlayer().equals(player) && x.getKey().equals(key));
     }
 
     public boolean playerHasPower(UUID playerUUID) {

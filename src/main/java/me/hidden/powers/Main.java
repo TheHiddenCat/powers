@@ -6,8 +6,8 @@ import me.hidden.powers.config.PlayerConfiguration;
 import me.hidden.powers.events.PlayerConnectionListener;
 import me.hidden.powers.managers.PowerManager;
 
+import me.hidden.powers.tasks.PowerCooldownsTask;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONArray;
 
@@ -24,9 +24,15 @@ public final class Main extends JavaPlugin {
         initializeManagers();
         initializeListeners();
         initializeCommands();
+        initializeTasks();
 
         displayNumberOfPowers();
         handleReload();
+    }
+
+    private void initializeTasks() {
+        var cooldownsTask = new PowerCooldownsTask(powerManager);
+        cooldownsTask.runTaskTimer(this, 0, cooldownsTask.getTickInterval());
     }
 
     private void initializeConfigurations() {
