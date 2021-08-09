@@ -38,7 +38,7 @@ public final class ListPowersSubCommand implements SubCommand {
             sender.sendMessage(ChatColor.GREEN + "[Powers]");
             var message = new StringBuilder();
             for (var power : powerManager.getPowers()) {
-                message.append(power.getFancyName()).append(" ");
+                message.append(power.getFancyName()).append("  ");
             }
             sender.sendMessage(message.toString());
             sender.sendMessage("");

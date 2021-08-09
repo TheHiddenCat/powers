@@ -3,7 +3,7 @@ package me.hidden.powers.powers;
 import org.bukkit.ChatColor;
 
 public enum PowerType {
-    PASSIVE(ChatColor.GREEN),
+    UTILITY(ChatColor.GREEN),
     DEFENSIVE(ChatColor.BLUE),
     OFFENSIVE(ChatColor.RED),
     SPECIAL(ChatColor.GOLD);
