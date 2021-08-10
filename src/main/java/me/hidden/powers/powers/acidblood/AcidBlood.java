@@ -2,6 +2,8 @@ package me.hidden.powers.powers.acidblood;
 
 import me.hidden.powers.powers.Power;
 import me.hidden.powers.powers.PowerType;
+import me.hidden.powers.util.RomanConverter;
+import org.bukkit.ChatColor;
 
 public final class AcidBlood extends Power {
 
@@ -17,7 +19,11 @@ public final class AcidBlood extends Power {
 
     @Override
     public String getDescription() {
-        return "Something";
+        return "Your blood has become venomous. Physical attacks from enemies now causes them to receive " +
+                ChatColor.GOLD + "Poison" + ChatColor.RESET + " " +
+                ChatColor.BLUE + RomanConverter.toRoman(getPoisonModifier() + 1) + ChatColor.RESET + " for " +
+                ChatColor.GREEN + (getPoisonDuration() / 20) + ChatColor.RESET +
+                " seconds. Also makes you immune to " + ChatColor.GOLD + "Poison" + ChatColor.RESET + ".";
     }
 
     @Override

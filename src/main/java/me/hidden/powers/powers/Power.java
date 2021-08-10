@@ -63,13 +63,9 @@ public abstract class Power {
         return cooldowns.stream().anyMatch(x ->  x.getPlayer().equals(player) && x.getKey().equals(key));
     }
 
+    // Test this
     public boolean playerHasPower(UUID playerUUID) {
-        for (var uuid : players) {
-            if (uuid.equals(playerUUID)) {
-                return true;
-            }
-        }
-        return false;
+        return players.contains(playerUUID);
     }
 
     public String getFancyName() {

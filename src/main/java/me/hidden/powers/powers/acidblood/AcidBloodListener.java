@@ -1,6 +1,5 @@
 package me.hidden.powers.powers.acidblood;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,6 +30,9 @@ public final class AcidBloodListener implements Listener {
         if (!enemy.hasPotionEffect(PotionEffectType.POISON)) {
             var potionEffect = new PotionEffect(PotionEffectType.POISON, power.getPoisonDuration(), power.getPoisonModifier(), true, true, true);
             enemy.addPotionEffect(potionEffect);
+        }
+        if (player.hasPotionEffect(PotionEffectType.POISON)) {
+            player.removePotionEffect(PotionEffectType.POISON);
         }
     }
 }
