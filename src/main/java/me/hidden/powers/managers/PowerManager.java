@@ -94,10 +94,12 @@ public final class PowerManager {
         if (power == null) return;
 
         power.addPlayer(uuid);
+        power.onRegister(uuid);
 
         if (power.amountPlayers() == 1) {
             try {
-                registerPowerEvents(power);
+                enablePowerEvents(power);
+                power.onEnable();
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -108,17 +110,19 @@ public final class PowerManager {
         if (power == null) return;
 
         power.removePlayer(uuid);
+        power.onUnregister(uuid);
 
         if (power.amountPlayers() == 0) {
             try {
-                unregisterPowerEvents(power);
+                disablePowerEvents(power);
+                power.onDisable();
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void registerPowerEvents(Power power) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void enablePowerEvents(Power power) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         var listeners = power.getEventListeners();
         for (var listener : listeners) {
             var constructor = listener.getConstructor(power.getClass());
@@ -127,7 +131,7 @@ public final class PowerManager {
         }
     }
 
-    public void unregisterPowerEvents(Power power) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void disablePowerEvents(Power power) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         var powerListeners = power.getEventListeners();
         var registered = HandlerList.getRegisteredListeners(plugin);
         for (var registeredListener : registered) {

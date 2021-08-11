@@ -31,8 +31,5 @@ public final class AcidBloodListener implements Listener {
             var potionEffect = new PotionEffect(PotionEffectType.POISON, power.getPoisonDuration(), power.getPoisonModifier(), true, true, true);
             enemy.addPotionEffect(potionEffect);
         }
-        if (player.hasPotionEffect(PotionEffectType.POISON)) {
-            player.removePotionEffect(PotionEffectType.POISON);
-        }
     }
 }

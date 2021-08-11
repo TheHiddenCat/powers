@@ -1,11 +1,14 @@
 package me.hidden.powers.powers.acidblood;
 
+import me.hidden.powers.Main;
 import me.hidden.powers.powers.Power;
 import me.hidden.powers.powers.PowerType;
 import me.hidden.powers.util.RomanConverter;
 import org.bukkit.ChatColor;
 
 public final class AcidBlood extends Power {
+
+    private AcidBloodImmunityTask task;
 
     public AcidBlood() {
         super();
@@ -29,6 +32,17 @@ public final class AcidBlood extends Power {
     @Override
     public PowerType getPowerType() {
         return PowerType.DEFENSIVE;
+    }
+
+    @Override
+    public void onEnable() {
+        task = new AcidBloodImmunityTask(this);
+        task.runTaskTimer(Main.getPlugin(Main.class), 0, 20);
+    }
+
+    @Override
+    public void onDisable() {
+
     }
 
     public int getPoisonModifier() {

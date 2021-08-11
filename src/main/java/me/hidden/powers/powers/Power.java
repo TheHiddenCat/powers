@@ -97,4 +97,12 @@ public abstract class Power {
             Bukkit.getLogger().info("Failed to initialize power configuration with file name: " + fileName + ".json");
         }
     }
+
+    public void onEnable() {}
+
+    public void onDisable() {}
+
+    public void onRegister(UUID player) {}
+
+    public void onUnregister(UUID player) {}
 }
