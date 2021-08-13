@@ -26,6 +26,6 @@ public final class Transfusion extends Power {
         return PowerType.OFFENSIVE;
     }
 
-    public double getDamage() { return getConfig("config", TransfusionConfiguration.class).getDamage(); }
-    public float getSaturation() { return getConfig("config", TransfusionConfiguration.class).getSaturation(); }
+    public double getDamagePerTick() { return getConfig("config", TransfusionConfiguration.class).getDamagePerTick(); }
+    public double getHealthPerTick() { return getConfig("config", TransfusionConfiguration.class).getHealthPerTick(); }
 }
