@@ -29,20 +29,16 @@ public final class TransfusionTask extends BukkitRunnable {
         var start = enemy.getEyeLocation();
         var end = player.getEyeLocation();
         this.location = enemy.getEyeLocation();
-        this.direction = MathUtils.getDirection(start, end);
         var distance = start.distance(end);
         this.distancePerTick = distance / MAX_TIME;
+        this.direction = MathUtils.getDirection(start, end).multiply(distancePerTick);
         this.counter = 0;
-        Bukkit.getLogger().info("" + distance);
-        Bukkit.getLogger().info("" + distancePerTick);
     }
 
     @Override
     public void run() {
         if (counter++ < MAX_TIME) {
             location.add(direction);
-            Bukkit.getLogger().info("" + location.getX() + " " + location.getY() + " " + location.getZ());
-
             var options = new Particle.DustOptions(Color.fromRGB(222, 0, 0), 1.8F);
             world.spawnParticle(Particle.REDSTONE, location, 15, 0.2f,0.2f,0.2f, options);
             enemy.damage(power.getDamagePerTick(), player);
