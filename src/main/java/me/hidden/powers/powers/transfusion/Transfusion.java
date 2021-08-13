@@ -2,7 +2,6 @@ package me.hidden.powers.powers.transfusion;
 
 import me.hidden.powers.powers.Power;
 import me.hidden.powers.powers.PowerType;
-import me.hidden.powers.powers.powerminer.PowerMinerConfiguration;
 
 public final class Transfusion extends Power {
 
@@ -29,5 +28,6 @@ public final class Transfusion extends Power {
 
     public double getDamage() { return getConfig("config", TransfusionConfiguration.class).getDamage(); }
     public double getHealth() { return getConfig("config", TransfusionConfiguration.class).getHealth(); }
+    public double getDistance() { return getConfig("config", TransfusionConfiguration.class).getDistance(); }
     public int getMaxEnemiesHit() { return getConfig("config", TransfusionConfiguration.class).getMaxEnemiesHit(); }
 }

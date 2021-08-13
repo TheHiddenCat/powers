@@ -10,6 +10,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 public final class TransfusionTask extends BukkitRunnable {
 
     private static final int MAX_TIME = 200;
+    private static final double MAX_VELOCITY = 3.0d;
+    private static final double VELOCITY_INCREMENT = 0.01d;
 
     private final Transfusion power;
     private final Player player;
@@ -35,7 +37,8 @@ public final class TransfusionTask extends BukkitRunnable {
             var options = new Particle.DustOptions(Color.fromRGB(222, 0, 0), 1.6F);
             world.spawnParticle(Particle.REDSTONE, location, 15, 0.2f,0.2f,0.2f, options);
             world.spawnParticle(Particle.BLOCK_CRACK, location, 3, 0.2f,0.2f,0.2f, Material.REDSTONE_BLOCK.createBlockData());
-            velocity += 0.01d;
+            velocity += VELOCITY_INCREMENT;
+            velocity = MathUtils.clamp(velocity, 0.0d, MAX_VELOCITY);
             if (player.getBoundingBox().contains(location.toVector())) {
                 hit();
             }

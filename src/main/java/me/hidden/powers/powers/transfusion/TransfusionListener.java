@@ -32,13 +32,13 @@ public final class TransfusionListener implements Listener {
         if (! power.playerHasPower(player.getUniqueId())) return;
         if ( power.onCooldown(player.getUniqueId(), TRANSFUSION_COOLDOWN_KEY)) return;
 
-        var entities = player.getNearbyEntities(10, 10, 10);
-        var location = player.getEyeLocation().toVector();
+        var d = power.getDistance();
+        var entities = player.getNearbyEntities(d, d, d);
         var hit = 0;
         for (var entity : entities) {
             if (hit >= power.getMaxEnemiesHit()) break;
             if (! (entity instanceof LivingEntity enemy)) continue;
-            if (location.distance(enemy.getLocation().toVector()) < 30 && player.hasLineOfSight(entity)) {
+            if (player.hasLineOfSight(entity)) {
                 new TransfusionTask(power, player, enemy).runTaskTimer(Main.getPlugin(Main.class), 0, 1);
                 enemy.damage(power.getDamage(), player);
                 hit++;
