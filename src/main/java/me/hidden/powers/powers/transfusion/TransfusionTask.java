@@ -6,48 +6,50 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 public final class TransfusionTask extends BukkitRunnable {
 
-    private static final int MAX_TIME = 20;
+    private static final int MAX_TIME = 200;
 
     private final Transfusion power;
     private final Player player;
-    private final LivingEntity enemy;
     private final World world;
-    private final Vector direction;
     private final Location location;
-    private final double distancePerTick;
     private int counter;
+    private double velocity;
 
     public TransfusionTask(Transfusion power, Player player, LivingEntity enemy) {
         this.power = power;
         this.player = player;
-        this.enemy = enemy;
         this.world = enemy.getWorld();
-        var start = enemy.getEyeLocation();
-        var end = player.getEyeLocation();
         this.location = enemy.getEyeLocation();
-        var distance = start.distance(end);
-        this.distancePerTick = distance / MAX_TIME;
-        this.direction = MathUtils.getDirection(start, end).multiply(distancePerTick);
         this.counter = 0;
+        this.velocity = 0.6d;
     }
 
     @Override
     public void run() {
         if (counter++ < MAX_TIME) {
+            var direction = MathUtils.getDirection(location, player.getEyeLocation()).multiply(velocity);
             location.add(direction);
-            var options = new Particle.DustOptions(Color.fromRGB(222, 0, 0), 1.8F);
+            var options = new Particle.DustOptions(Color.fromRGB(222, 0, 0), 1.6F);
             world.spawnParticle(Particle.REDSTONE, location, 15, 0.2f,0.2f,0.2f, options);
-            enemy.damage(power.getDamagePerTick(), player);
-            var healed = player.getHealth() + power.getHealthPerTick();
-            var max = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-            player.setHealth(MathUtils.clamp(healed, 0, max));
+            world.spawnParticle(Particle.BLOCK_CRACK, location, 3, 0.2f,0.2f,0.2f, Material.REDSTONE_BLOCK.createBlockData());
+            velocity += 0.01d;
+            if (player.getBoundingBox().contains(location.toVector())) {
+                hit();
+            }
         }
         else {
-            cancel();
+            hit();
         }
+    }
+
+    private void hit() {
+        var heal = player.getHealth() + power.getHealth();
+        var max = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        player.setHealth(MathUtils.clamp(heal, 0, max));
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_BREATH, 1.0f, 1.0f);
+        cancel();
     }
 }

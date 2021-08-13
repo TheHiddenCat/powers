@@ -14,11 +14,15 @@ public final class TransfusionConfiguration extends PowerConfiguration {
     @Override
     public String initialData() {
         var object = new JSONObject();
-        object.put("health_per_tick", 0.1d);
-        object.put("damage_per_tick", 1.0d);
+        object.put("health", 0.5d);
+        object.put("damage", 3.0d);
+        object.put("max_enemies_hit", 12);
         return object.toJSONString();
     }
 
-    public double getHealthPerTick() { return (double) getData().get("health_per_tick"); }
-    public double getDamagePerTick() { return (double) getData().get("damage_per_tick"); }
+    public double getHealth() { return (double) getData().get("health"); }
+    public double getDamage() { return (double) getData().get("damage"); }
+    public int getMaxEnemiesHit() {
+        return ((Number) getData().get("max_enemies_hit")).intValue();
+    }
 }

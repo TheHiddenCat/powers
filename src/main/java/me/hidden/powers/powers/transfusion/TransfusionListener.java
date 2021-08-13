@@ -2,12 +2,14 @@ package me.hidden.powers.powers.transfusion;
 
 import me.hidden.powers.Main;
 import me.hidden.powers.powers.Cooldown;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public final class TransfusionListener implements Listener {
 
@@ -21,17 +23,30 @@ public final class TransfusionListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerInteractEvent(PlayerInteractEntityEvent e) {
+    public void onPlayerInteractEvent(PlayerInteractEvent e) {
+        if (e.getItem() == null) return;
+        if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (e.getItem().getType() != Material.FERMENTED_SPIDER_EYE) return;
+
         var player = e.getPlayer();
-        var item = player.getInventory().getItemInMainHand();
-
-        if ( power.onCooldown(player.getUniqueId(), TRANSFUSION_COOLDOWN_KEY)) return;
         if (! power.playerHasPower(player.getUniqueId())) return;
-        if (! (e.getRightClicked() instanceof LivingEntity livingEntity)) return;
-        if ( item.getType() != Material.AIR) return;
+        if ( power.onCooldown(player.getUniqueId(), TRANSFUSION_COOLDOWN_KEY)) return;
 
-        new TransfusionTask(power, player, livingEntity).runTaskTimer(Main.getPlugin(Main.class), 0, 1);
-        power.addCooldown(new Cooldown(player.getUniqueId(), TRANSFUSION_COOLDOWN_KEY, TRANSFUSION_COOLDOWN));
-        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GHAST_SCREAM, 0.5f, 2.0f);
+        var entities = player.getNearbyEntities(10, 10, 10);
+        var location = player.getEyeLocation().toVector();
+        var hit = 0;
+        for (var entity : entities) {
+            if (hit >= power.getMaxEnemiesHit()) break;
+            if (! (entity instanceof LivingEntity enemy)) continue;
+            if (location.distance(enemy.getLocation().toVector()) < 30 && player.hasLineOfSight(entity)) {
+                new TransfusionTask(power, player, enemy).runTaskTimer(Main.getPlugin(Main.class), 0, 1);
+                enemy.damage(power.getDamage(), player);
+                hit++;
+            }
+        }
+        if (hit > 0) {
+            power.addCooldown(new Cooldown(player.getUniqueId(), TRANSFUSION_COOLDOWN_KEY, TRANSFUSION_COOLDOWN));
+            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.5f, 1.2f);
+        }
     }
 }
