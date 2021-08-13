@@ -86,5 +86,6 @@ public final class DawnBreakerListener implements Listener {
         new DawnBreakerSweepTask(player, world, location, power.getSweepDamage(), power.getSweepForce()).runTaskTimer(plugin, 0, 1);
         var cooldown = new Cooldown(player.getUniqueId(), SWEEP_COOLDOWN_KEY, SWEEP_COOLDOWN);
         power.addCooldown(cooldown);
+        player.setFallDistance(0f);
     }
 }
