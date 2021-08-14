@@ -1,7 +1,9 @@
 package me.hidden.powers.powers.bloodboil;
 
 import me.hidden.powers.Main;
+import me.hidden.powers.powers.Cooldown;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,8 +11,8 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public final class BloodBoilListener implements Listener {
 
-    private static String BLOODBOIL_COOLDOWN_KEY = "bloodboil.cooldown";
-    private static int BLOODBOIL_COOLDOWN = 300;
+    private static final String BLOODBOIL_COOLDOWN_KEY = "bloodboil.cooldown";
+    private static final int BLOODBOIL_COOLDOWN = 300;
 
     private final BloodBoil power;
 
@@ -23,12 +25,15 @@ public final class BloodBoilListener implements Listener {
         var player = e.getPlayer();
         var uuid = player.getUniqueId();
         if (!power.playerHasPower(uuid)) return;
+        if (!player.isSneaking()) return;
         if (power.onCooldown(uuid, BLOODBOIL_COOLDOWN_KEY)) return;
-        if (! (e.getRightClicked() instanceof LivingEntity enemy)) return;
+        if (!(e.getRightClicked() instanceof LivingEntity enemy)) return;
         var inventory = player.getInventory();
         var item = inventory.getItemInMainHand();
         if (item.getType() != Material.QUARTZ) return;
 
-        new BloodBoilTask(power, player, enemy).runTaskTimer(Main.getPlugin(Main.class), 0, 5);
+        new BloodBoilTask(power, player, enemy).runTaskTimer(Main.getPlugin(Main.class), 0, 2);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.8f, 0.3f);
+        power.addCooldown(new Cooldown(uuid, BLOODBOIL_COOLDOWN_KEY, BLOODBOIL_COOLDOWN));
     }
 }

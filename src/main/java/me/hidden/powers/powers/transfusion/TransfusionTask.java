@@ -34,7 +34,7 @@ public final class TransfusionTask extends BukkitRunnable {
         if (counter++ < MAX_TIME) {
             var direction = MathUtils.getDirection(location, player.getEyeLocation()).multiply(velocity);
             location.add(direction);
-            var options = new Particle.DustOptions(Color.fromRGB(222, 0, 0), 1.6F);
+            var options = new Particle.DustOptions(Color.fromRGB(222, 0, 0), 1.3F);
             world.spawnParticle(Particle.REDSTONE, location, 15, 0.2f,0.2f,0.2f, options);
             world.spawnParticle(Particle.BLOCK_CRACK, location, 3, 0.2f,0.2f,0.2f, Material.REDSTONE_BLOCK.createBlockData());
             velocity += VELOCITY_INCREMENT;

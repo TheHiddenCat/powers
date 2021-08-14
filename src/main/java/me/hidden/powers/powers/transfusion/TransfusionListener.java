@@ -46,7 +46,7 @@ public final class TransfusionListener implements Listener {
         }
         if (hit > 0) {
             power.addCooldown(new Cooldown(player.getUniqueId(), TRANSFUSION_COOLDOWN_KEY, TRANSFUSION_COOLDOWN));
-            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.5f, 1.2f);
+            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.4f, 1.2f);
         }
     }
 }
