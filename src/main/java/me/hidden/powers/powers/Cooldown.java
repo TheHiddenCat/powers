@@ -7,11 +7,29 @@ public class Cooldown {
     private final UUID player;
     private final String key;
     private int ticks;
+    private boolean isSilent;
+    private String message;
 
     public Cooldown(UUID player, String key, int ticks) {
         this.player = player;
         this.key = key;
         this.ticks = ticks;
+        this.isSilent = true;
+    }
+
+    public Cooldown(UUID player, String key, int ticks, boolean isSilent) {
+        this.player = player;
+        this.key = key;
+        this.ticks = ticks;
+        this.isSilent = isSilent;
+    }
+
+    public boolean silent() {
+        return isSilent;
+    }
+
+    public void silent(boolean isSilent) {
+        this.isSilent = isSilent;
     }
 
     public UUID getPlayer() {

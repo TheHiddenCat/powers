@@ -8,6 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 public final class BloodBoilListener implements Listener {
 
@@ -24,16 +25,18 @@ public final class BloodBoilListener implements Listener {
     public void onPlayerInteractWithEntity(PlayerInteractEntityEvent e) {
         var player = e.getPlayer();
         var uuid = player.getUniqueId();
+        var hand = e.getHand();
+        if (hand != EquipmentSlot.HAND) return;
         if (!power.playerHasPower(uuid)) return;
         if (!player.isSneaking()) return;
-        if (power.onCooldown(uuid, BLOODBOIL_COOLDOWN_KEY)) return;
         if (!(e.getRightClicked() instanceof LivingEntity enemy)) return;
+        if (power.onCooldown(uuid, BLOODBOIL_COOLDOWN_KEY)) return;
         var inventory = player.getInventory();
         var item = inventory.getItemInMainHand();
         if (item.getType() != Material.QUARTZ) return;
 
         new BloodBoilTask(power, player, enemy).runTaskTimer(Main.getPlugin(Main.class), 0, 2);
-        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.8f, 0.3f);
-        power.addCooldown(new Cooldown(uuid, BLOODBOIL_COOLDOWN_KEY, BLOODBOIL_COOLDOWN));
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.8f, 0.1f);
+        power.addCooldown(new Cooldown(uuid, BLOODBOIL_COOLDOWN_KEY, BLOODBOIL_COOLDOWN, false));
     }
 }

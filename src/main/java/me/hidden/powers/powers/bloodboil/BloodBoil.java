@@ -7,6 +7,7 @@ public final class BloodBoil extends Power {
 
     public BloodBoil() {
         super();
+        addConfig("config", BloodBoilConfiguration.class);
         addEvent(BloodBoilListener.class);
     }
 
@@ -23,5 +24,9 @@ public final class BloodBoil extends Power {
     @Override
     public PowerType getPowerType() {
         return PowerType.OFFENSIVE;
+    }
+
+    public double getDamage() {
+        return getConfig("config", BloodBoilConfiguration.class).getDamage();
     }
 }

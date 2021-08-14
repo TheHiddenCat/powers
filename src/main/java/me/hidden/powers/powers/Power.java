@@ -4,6 +4,7 @@ import me.hidden.powers.Main;
 
 import me.hidden.powers.config.PowerConfiguration;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 
 import java.io.File;
@@ -60,10 +61,23 @@ public abstract class Power {
         cooldowns.removeIf(x ->  x.getPlayer().equals(player) && x.getKey().equals(key));
     }
     public boolean onCooldown(UUID player, String key) {
-        return cooldowns.stream().anyMatch(x ->  x.getPlayer().equals(player) && x.getKey().equals(key));
+        Cooldown cooldown = null;
+        for (var cd : cooldowns) {
+            if (cd.getPlayer().equals(player) && cd.getKey().equals(key)) {
+                cooldown = cd;
+                break;
+            }
+        }
+        var found = cooldown != null;
+        if (found && !cooldown.silent()) {
+            var p = Bukkit.getPlayer(player);
+            if (p != null) {
+                p.sendMessage(ChatColor.GREEN + "[Powers] " + ChatColor.RED + getName() + " is on cooldown for " + ChatColor.GOLD + (cooldown.getTicks() / 20) + ChatColor.RED + " second(s).");
+            }
+        }
+        return found;
     }
 
-    // Test this
     public boolean playerHasPower(UUID playerUUID) {
         return players.contains(playerUUID);
     }

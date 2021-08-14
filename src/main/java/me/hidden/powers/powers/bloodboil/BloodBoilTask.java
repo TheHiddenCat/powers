@@ -2,10 +2,8 @@ package me.hidden.powers.powers.bloodboil;
 
 import me.hidden.powers.util.MathUtils;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -27,51 +25,57 @@ public final class BloodBoilTask extends BukkitRunnable {
     private final BloodBoil power;
     private final LivingEntity enemy;
     private final Player player;
-    private final Location location;
-    private final Block cast;
-    private int counter;
-
+    private final Location castLocation;
     private final List<Location> pentagramPoints;
+    private int counter;
 
     public BloodBoilTask(BloodBoil power, Player player, LivingEntity enemy) {
         this.power = power;
         this.player = player;
-        this.cast = player.getLocation().getBlock();
         this.enemy = enemy;
-        this.location = enemy.getLocation();
+        this.castLocation = enemy.getLocation();
         this.counter = 0;
         this.pentagramPoints = calculatePentagram(enemy.getLocation());
     }
 
     @Override
     public void run() {
+        if (enemy.isDead()) {
+            stop();
+        }
         if (!player.isSneaking()) {
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.7f, 0.4f);
-            enemy.removePotionEffect(PotionEffectType.LEVITATION);
-            cancel();
+            stop();
         }
         else {
             if (counter <= BLOODBOIL_CASTING_TIME) {
                 effects();
                 enemy.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 200, 0, false, false, false));
+                enemy.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 200, 1, false, false, false));
                 var currentLocation = enemy.getLocation();
-                currentLocation.setX(location.getX());
-                currentLocation.setZ(location.getZ());
-                if (currentLocation.getY() > location.getY() + BLOODBOIL_MAX_HEIGHT) {
+                currentLocation.setX(castLocation.getX());
+                currentLocation.setZ(castLocation.getZ());
+                if (currentLocation.getY() > castLocation.getY() + BLOODBOIL_MAX_HEIGHT) {
                     currentLocation.setY(currentLocation.getY() - 0.2f);
                 }
                 enemy.teleport(currentLocation);
                 counter += BLOODBOIL_TICK_TIME;
             } else {
-                enemy.damage(50);
+                enemy.damage(power.getDamage(), player);
                 var dust = new Particle.DustOptions(Color.fromRGB(222, 0, 0), 1.8f);
                 enemy.getWorld().playSound(enemy.getEyeLocation(), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 1.0f, 0.3f);
                 enemy.getWorld().playSound(enemy.getEyeLocation(), Sound.ENTITY_PLAYER_BREATH, 1.0f, 0.1f);
                 enemy.getWorld().spawnParticle(Particle.BLOCK_CRACK, enemy.getEyeLocation(), 50, 0.8f, 0.8f, 0.8f, Material.REDSTONE_BLOCK.createBlockData());
                 enemy.getWorld().spawnParticle(Particle.REDSTONE, enemy.getEyeLocation(), 50, 0.8f, 0.8f, 0.8f, dust);
-                cancel();
+                stop();
             }
         }
+    }
+
+    private void stop() {
+        enemy.removePotionEffect(PotionEffectType.LEVITATION);
+        enemy.removePotionEffect(PotionEffectType.WEAKNESS);
+        cancel();
     }
 
     private void effects() {
@@ -120,9 +124,9 @@ public final class BloodBoilTask extends BukkitRunnable {
     private void renderCircle(LivingEntity livingEntity, double radius) {
         var dust = new Particle.DustOptions(Color.fromRGB(122, 29, 29), 1);
         for (var d = 0; d <= 50; d += 1.8d) {
-            var spawn = new Location(location.getWorld(), location.getX(), location.getY() + 1.0f, location.getZ());
-            spawn.setX(location.getX() + Math.cos(d) * radius);
-            spawn.setZ(location.getZ() + Math.sin(d) * radius);
+            var spawn = new Location(castLocation.getWorld(), castLocation.getX(), castLocation.getY() + 1.0f, castLocation.getZ());
+            spawn.setX(castLocation.getX() + Math.cos(d) * radius);
+            spawn.setZ(castLocation.getZ() + Math.sin(d) * radius);
             livingEntity.getWorld().spawnParticle(Particle.REDSTONE, spawn, 1, 0, 0, 0, 0, dust);
         }
     }

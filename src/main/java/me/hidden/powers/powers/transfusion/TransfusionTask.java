@@ -34,7 +34,7 @@ public final class TransfusionTask extends BukkitRunnable {
         if (counter++ < MAX_TIME) {
             var direction = MathUtils.getDirection(location, player.getEyeLocation()).multiply(velocity);
             location.add(direction);
-            var options = new Particle.DustOptions(Color.fromRGB(222, 0, 0), 1.3F);
+            var options = new Particle.DustOptions(Color.fromRGB(222, 0, 0), 1.1F);
             world.spawnParticle(Particle.REDSTONE, location, 15, 0.2f,0.2f,0.2f, options);
             world.spawnParticle(Particle.BLOCK_CRACK, location, 3, 0.2f,0.2f,0.2f, Material.REDSTONE_BLOCK.createBlockData());
             velocity += VELOCITY_INCREMENT;
@@ -52,7 +52,7 @@ public final class TransfusionTask extends BukkitRunnable {
         var heal = player.getHealth() + power.getHealth();
         var max = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         player.setHealth(MathUtils.clamp(heal, 0, max));
-        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_BREATH, 1.0f, 1.0f);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_BREATH, 0.6f, 0.8f);
         cancel();
     }
 }
