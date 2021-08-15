@@ -1,4 +1,4 @@
-package me.hidden.powers.powers.bloodgod;
+package me.hidden.powers.powers.demiurge;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -8,14 +8,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public final class BloodGodTask extends BukkitRunnable {
+import java.util.Random;
 
-    private final BloodGod power;
+public final class DemiurgeTask extends BukkitRunnable {
+
+    private final Demiurge power;
     private final Particle.DustOptions options;
+    private final Random random;
 
-    public BloodGodTask(BloodGod power) {
+    public DemiurgeTask(Demiurge power) {
         this.power = power;
-        this.options = new Particle.DustOptions(Color.fromRGB(222, 0, 0), 0.5F);
+        this.options = new Particle.DustOptions(Color.fromRGB(255, 221, 145), 0.5F);
+        this.random = new Random();
     }
 
     @Override
@@ -35,6 +39,9 @@ public final class BloodGodTask extends BukkitRunnable {
             point.setX(location.getX() + Math.cos(angle) * 0.5d);
             point.setZ(location.getZ() + Math.sin(angle) * 0.5d);
             player.getWorld().spawnParticle(Particle.REDSTONE, point, 1, 0, 0, 0, 0, options);
+            if (random.nextInt(150) == 0) {
+                player.getWorld().spawnParticle(Particle.WHITE_ASH, point, 3, 0.8f,0.8f,0.8f);
+            }
         }
     }
 }

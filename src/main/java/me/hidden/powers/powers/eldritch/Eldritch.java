@@ -1,4 +1,4 @@
-package me.hidden.powers.powers.bloodgod;
+package me.hidden.powers.powers.eldritch;
 
 import me.hidden.powers.Main;
 import me.hidden.powers.powers.Power;
@@ -9,17 +9,17 @@ import me.hidden.powers.powers.vampirism.Vampirism;
 
 import java.util.List;
 
-public final class BloodGod extends Power {
+public final class Eldritch extends Power {
 
-    private BloodGodTask task;
+    private EldritchTask task;
 
-    public BloodGod() {
+    public Eldritch() {
         super();
     }
 
     @Override
     public void onEnable() {
-        task = new BloodGodTask(this);
+        task = new EldritchTask(this);
         task.runTaskTimer(Main.getPlugin(Main.class), 0, 2);
     }
 
@@ -30,7 +30,7 @@ public final class BloodGod extends Power {
 
     @Override
     public String getName() {
-        return "BloodGod";
+        return "Eldritch";
     }
 
     @Override
