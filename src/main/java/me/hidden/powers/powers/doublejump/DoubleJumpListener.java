@@ -15,7 +15,7 @@ public final class DoubleJumpListener implements Listener {
     private final DoubleJump power;
 
     private static final String JUMP_COOLDOWN_KEY = "doublejump.cooldown";
-    private static final int JUMP_COOLDOWN = 4;
+    private static final int JUMP_COOLDOWN = 2;
 
     public DoubleJumpListener(DoubleJump power) {
         this.power = power;
