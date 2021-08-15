@@ -14,10 +14,9 @@ import java.util.List;
 
 public final class BloodBoilTask extends BukkitRunnable {
 
-    private static final int BLOODBOIL_CASTING_TIME = 200;
+    private static final int BLOODBOIL_CASTING_TIME = 180;
     private static final int BLOODBOIL_TICK_TIME = 2;
     private static final float BLOODBOIL_MAX_HEIGHT = 2.0f;
-
     private static final int BLOODBOIL_CIRCLE_1 = 0;
     private static final int BLOODBOIL_CIRCLE_2 = 66;
     private static final int BLOODBOIL_CIRCLE_3 = 132;
@@ -34,8 +33,8 @@ public final class BloodBoilTask extends BukkitRunnable {
         this.player = player;
         this.enemy = enemy;
         this.castLocation = enemy.getLocation();
-        this.counter = 0;
         this.pentagramPoints = calculatePentagram(enemy.getLocation());
+        this.counter = 0;
     }
 
     @Override
@@ -95,14 +94,14 @@ public final class BloodBoilTask extends BukkitRunnable {
     private List<Location> calculatePentagram(Location loc) {
         loc.subtract(new Vector(5, 0, 2));
         final var points = new ArrayList<Location>();
-        final var d144 = Math.toRadians(144);
+        final var d144 = Math.toRadians(144d);
         var angle = 0d;
         for (var i = 0; i < 5; i++) {
             var x2 = loc.getX() + (Math.cos(angle) * 10.0d);
             var z2 = loc.getZ() + (Math.sin(-angle) * 10.0d);
             var dest = new Location(loc.getWorld(), x2, loc.getY(), z2);
             var dir = MathUtils.getDirection(loc, dest);
-            for (double l = 0; l < 10; l += 0.5) {
+            for (var l = 0.0d; l < 10d; l += 0.5d) {
                 var add = new Vector().copy(dir).multiply(l);
                 var point = loc.clone().add(add);
                 points.add(point);

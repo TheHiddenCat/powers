@@ -44,7 +44,7 @@ public final class DawnBreakerRayTask extends BukkitRunnable {
                 var livingEntity = (LivingEntity) entity;
                 var contains = hitEntities.stream().anyMatch(x -> x == livingEntity);
                 if (contains) continue;
-                livingEntity.damage(rayDamage);
+                livingEntity.damage(rayDamage, player);
                 world.spawnParticle(Particle.FLASH, livingEntity.getLocation(), 0, 0, 0, 0, 0);
                 hitEntities.add(livingEntity);
             }

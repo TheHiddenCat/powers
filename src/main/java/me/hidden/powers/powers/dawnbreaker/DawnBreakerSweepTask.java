@@ -52,7 +52,7 @@ public final class DawnBreakerSweepTask extends BukkitRunnable {
                 if (contains) continue;
                 var unit = livingEntity.getLocation().toVector().subtract(location.toVector()).normalize();
                 livingEntity.setVelocity(unit.multiply(sweepForce));
-                livingEntity.damage(sweepDamage);
+                livingEntity.damage(sweepDamage, player);
                 world.spawnParticle(Particle.FLASH, livingEntity.getLocation(), 0, 0f, 0f, 0f, 0);
                 world.spawnParticle(Particle.SWEEP_ATTACK, livingEntity.getLocation(), 1, 0f,0f,0f);
                 hitEntities.add(livingEntity);

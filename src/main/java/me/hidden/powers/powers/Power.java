@@ -112,6 +112,10 @@ public abstract class Power {
         }
     }
 
+    public Iterable<Class<? extends Power>> requiredPowers() {
+        return new HashSet<>(0);
+    }
+
     public void onEnable() {}
 
     public void onDisable() {}
