@@ -3,11 +3,17 @@ package me.hidden.powers.powers.thaumaturge;
 import me.hidden.powers.powers.thaumaturge.spells.Blizzard;
 import me.hidden.powers.powers.thaumaturge.spells.Fire;
 import me.hidden.powers.powers.thaumaturge.spells.Thunder;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Map;
 
@@ -15,6 +21,7 @@ public final class ThaumaturgeListener implements Listener {
 
     private final Thaumaturge power;
     private final Map<ThaumaturgeSpellType, ThaumaturgeSpell> spells;
+
 
     public ThaumaturgeListener(Thaumaturge power) {
         this.power = power;
@@ -35,14 +42,39 @@ public final class ThaumaturgeListener implements Listener {
         var player = e.getPlayer();
         var uuid = player.getUniqueId();
         var spellType = power.getSelectedSpell(player.getUniqueId());
-
         if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-            power.setSelectedSpell(uuid, ThaumaturgeSpellType.cycle(spellType));
+            var nextSpell = ThaumaturgeSpellType.cycle(spellType);
+            power.setSelectedSpell(uuid, nextSpell);
+            player.sendMessage(ChatColor.GREEN + "[Powers] " +  ChatColor.RESET + "Selected spell: " + ChatColor.GOLD + nextSpell.name());
+            player.playSound(player.getEyeLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 0.8f, 0.8f);
         }
         else if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK) {
+            if (power.isOverloaded(uuid)) {
+                player.playSound(player.getEyeLocation(), Sound.ENTITY_BEE_HURT, 1.2f, 0.3f);
+                return;
+            }
             var actualSpell =  spells.get(spellType);
             if (actualSpell == null) return;
-            actualSpell.execute(power, e);
+            actualSpell.launch(power, e);
+            var overload = power.incrementFlux(uuid, actualSpell.getFluxCost());
+            if (overload) {
+                power.addOverloaded(uuid);
+                player.playSound(player.getEyeLocation(), Sound.ENTITY_BEE_HURT, 1.2f, 0.1f);
+                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 200, 0, false, true, true));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 0, false, true, true));
+            }
         }
+    }
+
+    @EventHandler
+    public void onProjectileHitEvent(ProjectileHitEvent e) {
+        var projectile = e.getEntity();
+        if (!projectile.hasMetadata(power.getSpellKey())) return;
+        var metadata = projectile.getMetadata(power.getSpellKey());
+        if (metadata.size() == 0) return;
+        var value = metadata.get(0).asString();
+        var spell = spells.get(ThaumaturgeSpellType.valueOf(value));
+        if (spell == null) return;
+        spell.hit(power, e);
     }
 }

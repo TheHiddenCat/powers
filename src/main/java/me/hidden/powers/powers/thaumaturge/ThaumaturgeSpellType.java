@@ -8,7 +8,7 @@ public enum ThaumaturgeSpellType {
     public static ThaumaturgeSpellType cycle(ThaumaturgeSpellType current) {
         var options = values();
         var index = current.ordinal() + 1;
-        if (index > options.length) {
+        if (index >= options.length) {
             return FIRE;
         }
         else {
