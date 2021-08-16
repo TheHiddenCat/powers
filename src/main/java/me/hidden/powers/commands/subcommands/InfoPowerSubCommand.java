@@ -37,6 +37,7 @@ public class InfoPowerSubCommand implements SubCommand {
             var powerName = args[1];
             var power = powerManager.getPower(powerName);
             if (power == null) {
+                sender.sendMessage(ChatColor.GREEN + "[Powers]");
                 sender.sendMessage(ChatColor.YELLOW + "Invalid Power name, make sure the name is correct!");
                 return false;
             }
