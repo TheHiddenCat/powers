@@ -8,6 +8,7 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -15,7 +16,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.Vector;
 
 import java.util.Random;
 
@@ -33,7 +33,7 @@ public final class IchorListener implements Listener {
         this.dust = new Particle.DustOptions(Color.fromRGB(255, 221, 145), 1.2F);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDamageEvent(EntityDamageByEntityEvent e) {
         if (! (e.getEntity() instanceof Player player)) return;
         var uuid = player.getUniqueId();
@@ -66,24 +66,15 @@ public final class IchorListener implements Listener {
         var type = item.getType();
         if (type != Material.GLOWSTONE && type != Material.GLOWSTONE_DUST) return;
 
-        var max = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         var location = player.getEyeLocation();
-
-        if (player.getHealth() == max) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Your health is full"));
-            return;
-        }
-
         if (type == Material.GLOWSTONE_DUST && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)) {
-            var heal = player.getHealth() + power.getGlowStoneDustHeal();
-            player.setHealth(MathUtils.clamp(heal, 0, max));
+            if (!heal(player, power.getGlowStoneDustHeal())) return;
             player.spawnParticle(Particle.BLOCK_CRACK, location, 3, 0.2f,0.2f,0.2f, Material.GLOWSTONE.createBlockData());
             player.spawnParticle(Particle.REDSTONE, location, 10, 0.5f, 0.5f, 0.5f, dust);
             player.playSound(location, Sound.BLOCK_RESPAWN_ANCHOR_CHARGE, 0.7f, 0.9f);
         }
         else if (type == Material.GLOWSTONE && (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK)) {
-            var heal = player.getHealth() + power.getGlowStoneHeal();
-            player.setHealth(MathUtils.clamp(heal, 0, max));
+            if (!heal(player, power.getGlowStoneHeal())) return;
             player.spawnParticle(Particle.BLOCK_CRACK, location, 3, 0.2f,0.2f,0.2f, Material.GLOWSTONE.createBlockData());
             player.spawnParticle(Particle.REDSTONE, location, 20, 1f, 1f, 1f, dust);
             player.playSound(location, Sound.BLOCK_RESPAWN_ANCHOR_CHARGE, 0.9f, 1.4f);
@@ -102,5 +93,16 @@ public final class IchorListener implements Listener {
         }
 
         power.addCooldown(new Cooldown(player.getUniqueId(), ICHOR_COOLDOWN_KEY, power.getConsumeCooldownTicks(), power.getConsumeCooldownTicks() < 60));
+    }
+
+    private boolean heal(Player player, double amount) {
+        var max = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        if (player.getHealth() == max) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Your health is full"));
+            return false;
+        }
+        var heal = player.getHealth() + amount;
+        player.setHealth(MathUtils.clamp(heal, 0, max));
+        return true;
     }
 }

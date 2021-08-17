@@ -7,15 +7,19 @@ import me.hidden.powers.powers.thaumaturge.spells.Thunder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.LightningStrike;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Map;
+import java.util.UUID;
 
 public final class ThaumaturgeListener implements Listener {
 
@@ -30,6 +34,36 @@ public final class ThaumaturgeListener implements Listener {
                 ThaumaturgeSpellType.BLIZZARD, new Blizzard(power.getBlizzardFluxCost()),
                 ThaumaturgeSpellType.THUNDER, new Thunder(power.getThunderFluxCost())
         );
+    }
+
+    /*
+    @EventHandler
+    public void onStrike(LightningStrikeEvent e) {
+        var lightningStrike = e.getLightning();
+        var metadata = lightningStrike.getMetadata(power.getSpellKey());
+        if (metadata.size() == 0) return;
+        var value = (ThaumaturgeSpellType) metadata.get(0).value();
+        if (value != ThaumaturgeSpellType.THUNDER) return;
+        lightningStrike.setSilent(true);
+    }
+    */
+
+    @EventHandler
+    public void onPlayerDamageEvent(EntityDamageByEntityEvent e) {
+        if (!(e.getEntity() instanceof Player player)) return;
+        if (!power.playerHasPower(player.getUniqueId())) return;
+        if (!(e.getDamager() instanceof LightningStrike lightningStrike)) return;
+
+        var metadata = lightningStrike.getMetadata(power.getThunderKey());
+        if (metadata.size() == 0) return;
+
+        var value = metadata.get(0).asString();
+        var uuid = UUID.fromString(value);
+
+        if (uuid.equals(player.getUniqueId())) {
+            e.setDamage(0);
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler

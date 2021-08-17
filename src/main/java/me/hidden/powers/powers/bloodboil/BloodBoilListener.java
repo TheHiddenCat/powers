@@ -2,9 +2,11 @@ package me.hidden.powers.powers.bloodboil;
 
 import me.hidden.powers.Main;
 import me.hidden.powers.powers.Cooldown;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -30,6 +32,9 @@ public final class BloodBoilListener implements Listener {
         if (!power.playerHasPower(uuid)) return;
         if (!player.isSneaking()) return;
         if (!(e.getRightClicked() instanceof LivingEntity enemy)) return;
+        if (enemy instanceof Player enemyPlayer) {
+            if (enemyPlayer.getGameMode() == GameMode.CREATIVE) return;
+        }
         if (power.onCooldown(uuid, BLOODBOIL_COOLDOWN_KEY)) return;
         var inventory = player.getInventory();
         var item = inventory.getItemInMainHand();

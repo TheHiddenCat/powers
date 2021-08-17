@@ -20,6 +20,7 @@ public final class Thaumaturge extends Power {
     private final Set<UUID> overloaded;
 
     private final String spellKey = "power.thaumaturge.spell";
+    private final String thunderKey = "power.thaumaturge.thunder_caster";
 
     private FluxTask task;
 
@@ -139,6 +140,10 @@ public final class Thaumaturge extends Power {
 
     public String getSpellKey() {
         return spellKey;
+    }
+
+    public String getThunderKey() {
+        return thunderKey;
     }
 
     public double getFireFluxCost() {

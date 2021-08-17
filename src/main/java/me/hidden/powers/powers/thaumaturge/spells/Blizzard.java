@@ -4,8 +4,8 @@ import me.hidden.powers.Main;
 import me.hidden.powers.powers.thaumaturge.Thaumaturge;
 import me.hidden.powers.powers.thaumaturge.ThaumaturgeSpell;
 import me.hidden.powers.powers.thaumaturge.ThaumaturgeSpellType;
+
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Snowball;
@@ -43,8 +43,8 @@ public final class Blizzard extends ThaumaturgeSpell {
         var range = power.getBlizzardAoe();
         var options = new Particle.DustOptions(Color.fromRGB(176, 214, 245), 2.0F);
         for (int i = 0; i < 10; i++) {
-            world.spawnParticle(Particle.REDSTONE, location, 20, range, range, range, options);
-            world.spawnParticle(Particle.SNOW_SHOVEL, location, 10, range,range,range);
+            world.spawnParticle(Particle.REDSTONE, location, 5, range, range, range, options);
+            world.spawnParticle(Particle.SNOW_SHOVEL, location, 5, range,range,range);
         }
 
         var nearby = world.getNearbyEntities(location,range, range, range);
@@ -61,9 +61,5 @@ public final class Blizzard extends ThaumaturgeSpell {
                 livingEntity.getWorld().playSound(pos, Sound.BLOCK_GLASS_BREAK, 0.5f, 0.1f);
             }
         }
-    }
-
-    private void splashEffect(Location location, Entity shooter, Entity hitEntity) {
-
     }
 }

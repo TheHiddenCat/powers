@@ -23,7 +23,7 @@ public final class ThaumaturgeConfiguration extends PowerConfiguration {
         object.put("blizzard_slow_duration", 120);
         object.put("blizzard_slow_amplifier", 1);
 
-        object.put("thunder_flux_cost", 1.5d);
+        object.put("thunder_flux_cost", 3.0d);
         object.put("max_flux", 10d);
         return object.toJSONString();
     }

@@ -1,5 +1,6 @@
 package me.hidden.powers.powers.quickreflex;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -21,6 +22,7 @@ public final class QuickReflexListener implements Listener {
     public void onPlayerDamage(EntityDamageByEntityEvent e) {
         if (!(e.getEntity() instanceof Player player)) return;
         if (!power.playerHasPower(player.getUniqueId())) return;
+        if (player.getGameMode() == GameMode.CREATIVE) return;
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) return;
         if (!(e.getDamager() instanceof Projectile projectile)) return;
 
