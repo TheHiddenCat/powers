@@ -3,6 +3,8 @@ package me.hidden.powers.powers;
 import me.hidden.powers.Main;
 
 import me.hidden.powers.config.PowerConfiguration;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
@@ -72,7 +74,7 @@ public abstract class Power {
         if (found && !cooldown.silent()) {
             var p = Bukkit.getPlayer(player);
             if (p != null) {
-                p.sendMessage(ChatColor.GREEN + "[Powers] " + ChatColor.RED + getName() + " is on cooldown for " + ChatColor.GOLD + (cooldown.getTicks() / 20) + ChatColor.RED + " second(s).");
+                p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + getName() + " is on cooldown for " + ChatColor.GOLD + (cooldown.getTicks() / 20) + ChatColor.RED + " second(s)."));
             }
         }
         return found;

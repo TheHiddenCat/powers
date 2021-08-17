@@ -6,6 +6,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -23,7 +24,9 @@ public final class SugarRushListener implements Listener {
         var player = e.getPlayer();
         var uuid = player.getUniqueId();
         var item = e.getItem();
+        var action = e.getAction();
         if (!power.playerHasPower(uuid)) return;
+        if (action != Action.RIGHT_CLICK_AIR  && action != Action.RIGHT_CLICK_BLOCK) return;
         if (item == null) return;
         if (item.getType() != Material.SUGAR) return;
 

@@ -24,8 +24,6 @@ public final class PaladinListener implements Listener {
         if (!power.playerHasPower(player.getUniqueId())) return;
         if (player.getInventory().getItemInOffHand().getType() != Material.SHIELD) return;
         if (!(e.getDamager() instanceof LivingEntity damager)) return;
-        if (!player.isBlocking()) return;
-        damager.damage(e.getDamage(), player);
         damager.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 200, 0));
         damager.getWorld().spawnParticle(Particle.FLASH, damager.getEyeLocation(), 1);
     }

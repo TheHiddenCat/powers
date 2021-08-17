@@ -8,7 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 
 public final class QuickReflexListener implements Listener {
 
@@ -25,23 +24,15 @@ public final class QuickReflexListener implements Listener {
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) return;
         if (!(e.getDamager() instanceof Projectile projectile)) return;
 
-        var shooter = (LivingEntity) projectile.getShooter();
-        if (shooter == null) return;
-
-        var location = player.getEyeLocation();
-        var shooterLocation = shooter.getEyeLocation().toVector().subtract(location.toVector());
-        var dot = shooterLocation.normalize().dot(location.getDirection());
-        var playerIsLooking = dot > 0.99d;
-
-        if (!playerIsLooking) return;
-
         var material = getMaterialFromProjectile(projectile);
         if (material == null) return;
 
+        var location = player.getEyeLocation();
         player.getInventory().addItem(new ItemStack(material));
-        player.playSound(location, Sound.ENTITY_ARROW_SHOOT, 0.8f, 0.8f);
+        player.playSound(location, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.5f, 1.2f);
         player.getWorld().spawnParticle(Particle.SWEEP_ATTACK, location, 1);
         projectile.remove();
+        e.setDamage(0);
         e.setCancelled(true);
     }
 
