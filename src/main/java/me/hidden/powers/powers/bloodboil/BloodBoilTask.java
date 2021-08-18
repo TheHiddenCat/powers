@@ -4,6 +4,7 @@ import me.hidden.powers.util.MathUtils;
 import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -50,14 +51,14 @@ public final class BloodBoilTask extends BukkitRunnable {
             if (counter <= BLOODBOIL_CASTING_TIME) {
                 effects();
                 enemy.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 200, 0, false, false, false));
-                enemy.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 200, 1, false, false, false));
+                enemy.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 200, 0, false, false, false));
                 var currentLocation = enemy.getLocation();
                 currentLocation.setX(castLocation.getX());
                 currentLocation.setZ(castLocation.getZ());
                 if (currentLocation.getY() > castLocation.getY() + BLOODBOIL_MAX_HEIGHT) {
                     currentLocation.setY(currentLocation.getY() - 0.2f);
                 }
-                enemy.teleport(currentLocation);
+                enemy.teleport(currentLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
                 counter += BLOODBOIL_TICK_TIME;
             } else {
                 enemy.damage(power.getDamage(), player);

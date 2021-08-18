@@ -37,4 +37,20 @@ public final class BowMaster extends Power {
     public double getArrowVelocity() {
         return getConfig("config", BowMasterConfiguration.class).getArrowVelocity();
     }
+
+    public double getArrowsBodyExplodeDamage() {
+        return getConfig("config", BowMasterConfiguration.class).getArrowsBodyExplodeDamage();
+    }
+
+    public int getArrowsBodyAmount() {
+        return getConfig("config", BowMasterConfiguration.class).getArrowsBodyAmount();
+    }
+
+    public int getArrowExplodeWeaknessAmplifier() {
+        return getConfig("config", BowMasterConfiguration.class).getArrowExplodeWeaknessAmplifier();
+    }
+
+    public int getArrowExplodeWeaknessDuration() {
+        return getConfig("config", BowMasterConfiguration.class).getArrowExplodeWeaknessDuration();
+    }
 }

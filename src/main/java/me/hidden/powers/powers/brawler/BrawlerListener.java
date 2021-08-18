@@ -26,6 +26,6 @@ public final class BrawlerListener implements Listener {
         var damage = e.getDamage() * power.getDamageModifier();
         e.setDamage(damage);
         enemy.getWorld().spawnParticle(Particle.BLOCK_CRACK, enemy.getLocation().add(0, 1, 0), 4, 0.3f,0.3f,0.3f, Material.REDSTONE_BLOCK.createBlockData());
-        enemy.getWorld().playSound(enemy.getLocation(), Sound.ENTITY_PLAYER_ATTACK_STRONG, 0.6f, 0.6f);
+        enemy.getWorld().playSound(enemy.getLocation(), Sound.ENTITY_PLAYER_ATTACK_STRONG, 0.4f, 0.6f);
     }
 }
