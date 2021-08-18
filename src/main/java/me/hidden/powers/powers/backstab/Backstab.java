@@ -2,7 +2,7 @@ package me.hidden.powers.powers.backstab;
 
 import me.hidden.powers.powers.Power;
 import me.hidden.powers.powers.PowerType;
-import me.hidden.powers.powers.bloodboil.BloodBoilConfiguration;
+import org.bukkit.ChatColor;
 
 public final class Backstab extends Power {
 
@@ -19,7 +19,8 @@ public final class Backstab extends Power {
 
     @Override
     public String getDescription() {
-        return "Damaging enemies from behind their back increases damage dealt by 50%";
+        return "Damage is increased by " + ChatColor.GREEN + "+" +
+                (getDamageModifier() * 100d - 100d) + "% " + ChatColor.RESET + "when hitting enemies from behind.";
     }
 
     @Override

@@ -22,7 +22,7 @@ public final class AcidBlood extends Power {
 
     @Override
     public String getDescription() {
-        return "Your blood has become venomous. Physical attacks from enemies now causes them to receive " +
+        return "Physical attacks from enemies afflicts " +
                 ChatColor.GOLD + "Poison" + ChatColor.RESET + " " +
                 ChatColor.BLUE + RomanConverter.toRoman(getPoisonModifier() + 1) + ChatColor.RESET + " for " +
                 ChatColor.GREEN + (getPoisonDuration() / 20) + ChatColor.RESET +
