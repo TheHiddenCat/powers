@@ -3,6 +3,12 @@ package me.hidden.powers.powers.demiurge;
 import me.hidden.powers.Main;
 import me.hidden.powers.powers.Power;
 import me.hidden.powers.powers.PowerType;
+import me.hidden.powers.powers.bloodboil.BloodBoil;
+import me.hidden.powers.powers.dawnbreaker.DawnBreaker;
+import me.hidden.powers.powers.ichor.Ichor;
+import me.hidden.powers.powers.requiem.Requiem;
+import me.hidden.powers.powers.transfusion.Transfusion;
+import me.hidden.powers.powers.vampirism.Vampirism;
 import org.bukkit.Location;
 
 import java.util.*;
@@ -42,6 +48,11 @@ public final class Demiurge extends Power {
     @Override
     public PowerType getPowerType() {
         return PowerType.ULTIMATE;
+    }
+
+    @Override
+    public Iterable<Class<? extends Power>> requiredPowers() {
+        return List.of(DawnBreaker.class, Requiem.class, Ichor.class);
     }
 
     public void addMoving(UUID player) {
