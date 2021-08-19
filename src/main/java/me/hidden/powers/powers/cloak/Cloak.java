@@ -21,7 +21,7 @@ public final class Cloak extends Power {
 
     @Override
     public String getDescription() {
-        return "Become" + ChatColor.GOLD + " Invisible" + ChatColor.RESET + " while sneaking. When turning invisible resets enemy aggression if not wearing armor.";
+        return "Become" + ChatColor.GOLD + " Invisible" + ChatColor.RESET + " while sneaking. If not wearing armor resets enemy aggression on turning invisible.";
     }
 
     @Override

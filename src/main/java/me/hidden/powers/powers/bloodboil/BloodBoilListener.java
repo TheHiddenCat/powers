@@ -35,10 +35,10 @@ public final class BloodBoilListener implements Listener {
         if (enemy instanceof Player enemyPlayer) {
             if (enemyPlayer.getGameMode() == GameMode.CREATIVE) return;
         }
-        if (power.onCooldown(uuid, BLOODBOIL_COOLDOWN_KEY)) return;
         var inventory = player.getInventory();
         var item = inventory.getItemInMainHand();
         if (item.getType() != Material.QUARTZ) return;
+        if (power.onCooldown(uuid, BLOODBOIL_COOLDOWN_KEY)) return;
 
         new BloodBoilTask(power, player, enemy).runTaskTimer(Main.getPlugin(Main.class), 0, 2);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.8f, 0.1f);

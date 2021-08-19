@@ -23,7 +23,7 @@ public final class Ichor extends Power {
 
     @Override
     public PowerType getPowerType() {
-        return PowerType.UTILITY;
+        return PowerType.DEFENSIVE;
     }
 
     public double getGlowStoneDustHeal() { return getConfig("config", IchorConfiguration.class).getGlowStoneDustHeal(); }
