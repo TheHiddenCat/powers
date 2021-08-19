@@ -4,22 +4,18 @@ import me.hidden.powers.Main;
 import me.hidden.powers.util.IntegerReference;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.*;
 
 public final class VeinminerListener implements Listener {
 
     private final Veinminer power;
-
-    private static final String VEINMINER_MARK_KEY = "veinminer.mark";
 
     private final Map<UUID, Location> markedBlocks;
 
@@ -76,8 +72,8 @@ public final class VeinminerListener implements Listener {
             tool = equipment.getItemInMainHand();
         }
         var blocks = new LinkedList<Block>();
-        scanBlocks(block, block.getType(), new IntegerReference(0), blocks, 32);
-        new VeinMinerTask(blocks, tool).runTaskTimer(Main.getPlugin(Main.class), 0, 2);
+        scanBlocks(block, block.getType(), new IntegerReference(0), blocks, 64);
+        new VeinMinerTask(blocks, tool).runTaskTimer(Main.getPlugin(Main.class), 0, 1);
     }
 
     private void scanBlocks(final Block block, final Material material, final IntegerReference counter, final LinkedList<Block> blocks, final int limit) {
@@ -91,10 +87,18 @@ public final class VeinminerListener implements Listener {
         }
 
         var relatives = new Block[] {
-            block.getRelative(BlockFace.NORTH),
-            block.getRelative(BlockFace.SOUTH),
-            block.getRelative(BlockFace.EAST),
-            block.getRelative(BlockFace.WEST)
+            block.getRelative(1, 0, 0),
+            block.getRelative(0, 1, 0),
+            block.getRelative(0, 0, 1),
+            block.getRelative(1, 1, 0),
+            block.getRelative(0, 1, 1),
+            block.getRelative(1, 1, 1),
+            block.getRelative(-1, 0, 0),
+            block.getRelative(0, -1, 0),
+            block.getRelative(0, 0, -1),
+            block.getRelative(-1, -1, 0),
+            block.getRelative(0, -1, -1),
+            block.getRelative(-1, -1, -1),
         };
 
         for (var relative : relatives) {

@@ -69,7 +69,7 @@ public final class RequiemTask extends BukkitRunnable {
     }
 
     private void stop() {
-        player.getWorld().playSound(player.getEyeLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0f, 0.5f);
+        player.getWorld().playSound(player.getEyeLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0f, 0.2f);
         player.setWalkSpeed(0.2f);
         cancel();
     }

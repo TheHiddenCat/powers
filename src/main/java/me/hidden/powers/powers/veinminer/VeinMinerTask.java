@@ -1,6 +1,5 @@
 package me.hidden.powers.powers.veinminer;
 
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -14,13 +13,11 @@ public final class VeinMinerTask extends BukkitRunnable {
 
     private final LinkedList<Block> blocks;
     private final ItemStack tool;
-    private final Particle.DustOptions options;
     private float pitch;
 
     public VeinMinerTask(LinkedList<Block> blocks, ItemStack tool) {
         this.blocks = blocks;
         this.tool = tool;
-        this.options = new Particle.DustOptions(Color.fromRGB(255, 145, 0), 1.5F);
         this.pitch = 0.3f;
     }
 
@@ -37,7 +34,7 @@ public final class VeinMinerTask extends BukkitRunnable {
 
             world.spawnParticle(Particle.BLOCK_CRACK, location.add(0.5f, 0.5f, 0.5f), 15, 0.3f, 0.3f, 0.3f, 0, material.createBlockData());
             world.playSound(location, Sound.BLOCK_AMETHYST_CLUSTER_PLACE, 0.8f, pitch);
-            pitch += 0.06f;
+            pitch += 0.02f;
             block.setType(Material.AIR);
             blocks.pop();
         }
