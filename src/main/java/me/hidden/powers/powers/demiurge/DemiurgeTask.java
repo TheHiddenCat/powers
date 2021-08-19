@@ -8,18 +8,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 public final class DemiurgeTask extends BukkitRunnable {
 
     private final Demiurge power;
     private final Particle.DustOptions options;
     private final Random random;
+    private final Vector zero;
 
     public DemiurgeTask(Demiurge power) {
         this.power = power;
         this.options = new Particle.DustOptions(Color.fromRGB(255, 221, 145), 0.5F);
         this.random = new Random();
+        this.zero = new Vector().zero();
     }
 
     @Override
@@ -28,7 +33,10 @@ public final class DemiurgeTask extends BukkitRunnable {
         for (var uuid : uuids) {
             var player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            renderCrown(player);
+            if (!power.isMoving(uuid)) {
+                renderCrown(player);
+            }
+            power.removeMoving(uuid);
         }
     }
 

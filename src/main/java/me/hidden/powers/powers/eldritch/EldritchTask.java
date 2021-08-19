@@ -25,7 +25,10 @@ public final class EldritchTask extends BukkitRunnable {
         for (var uuid : uuids) {
             var player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            renderCrown(player);
+            if (!power.isMoving(uuid)) {
+                renderCrown(player);
+            }
+            power.removeMoving(uuid);
         }
     }
 

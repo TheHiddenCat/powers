@@ -7,14 +7,20 @@ import me.hidden.powers.powers.bloodboil.BloodBoil;
 import me.hidden.powers.powers.transfusion.Transfusion;
 import me.hidden.powers.powers.vampirism.Vampirism;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public final class Eldritch extends Power {
 
     private EldritchTask task;
+    private final Set<UUID> moving;
 
     public Eldritch() {
         super();
+        addEvent(EldritchListener.class);
+        moving = new HashSet<>();
     }
 
     @Override
@@ -46,5 +52,17 @@ public final class Eldritch extends Power {
     @Override
     public Iterable<Class<? extends Power>> requiredPowers() {
         return List.of(Transfusion.class, BloodBoil.class, Vampirism.class);
+    }
+
+    public void addMoving(UUID player) {
+        moving.add(player);
+    }
+
+    public void removeMoving(UUID player) {
+        moving.remove(player);
+    }
+
+    public boolean isMoving(UUID player) {
+        return moving.contains(player);
     }
 }
