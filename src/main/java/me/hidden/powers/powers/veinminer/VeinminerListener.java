@@ -18,6 +18,7 @@ public final class VeinminerListener implements Listener {
     private final Veinminer power;
 
     private final Map<UUID, Location> markedBlocks;
+    private static final int VEINMINER_SCAN_LIMIT = 64;
 
     public VeinminerListener(Veinminer power) {
         this.power = power;
@@ -72,13 +73,13 @@ public final class VeinminerListener implements Listener {
             tool = equipment.getItemInMainHand();
         }
         var blocks = new LinkedList<Block>();
-        scanBlocks(block, block.getType(), new IntegerReference(0), blocks, 64);
+        scanBlocks(block, block.getType(), new IntegerReference(0), blocks);
         new VeinMinerTask(blocks, tool).runTaskTimer(Main.getPlugin(Main.class), 0, 1);
     }
 
-    private void scanBlocks(final Block block, final Material material, final IntegerReference counter, final LinkedList<Block> blocks, final int limit) {
+    private void scanBlocks(final Block block, final Material material, final IntegerReference counter, final LinkedList<Block> blocks) {
 
-        if (!blocks.contains(block) && block.getType() == material && counter.value < limit) {
+        if (block != null && !blocks.contains(block) && block.getType() == material && counter.value < VEINMINER_SCAN_LIMIT) {
             blocks.add(block);
             counter.value++;
         }
@@ -86,23 +87,19 @@ public final class VeinminerListener implements Listener {
             return;
         }
 
-        var relatives = new Block[] {
-            block.getRelative(1, 0, 0),
-            block.getRelative(0, 1, 0),
-            block.getRelative(0, 0, 1),
-            block.getRelative(1, 1, 0),
-            block.getRelative(0, 1, 1),
-            block.getRelative(1, 1, 1),
-            block.getRelative(-1, 0, 0),
-            block.getRelative(0, -1, 0),
-            block.getRelative(0, 0, -1),
-            block.getRelative(-1, -1, 0),
-            block.getRelative(0, -1, -1),
-            block.getRelative(-1, -1, -1),
-        };
+        var relatives = new Block[27];
+        var i = 0;
+        for (var x = -1; x < 2; x++) {
+            for (var y = -1; y < 2; y++) {
+                for (var z = -1; z < 2; z++) {
+                    if (x == 0 && y == 0 && z == 0) continue;
+                    relatives[i++] = block.getRelative(x, y, z);
+                }
+            }
+        }
 
         for (var relative : relatives) {
-            scanBlocks(relative, material, counter, blocks, limit);
+            scanBlocks(relative, material, counter, blocks);
         }
     }
 
